@@ -1,2 +1,26 @@
+# credentials
 .env
-venv
+
+# data files
+data/raw/
+data/processed/
+*.csv
+*.parquet
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# notebooks
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+.DS_Store
+.claude
+
+# LSEG data
+lseg-data.config.json

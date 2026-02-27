@@ -1,0 +1,8 @@
+pandas
+numpy
+statsmodels
+scipy
+lseg-data
+python-dotenv
+streamlit
+plotly
