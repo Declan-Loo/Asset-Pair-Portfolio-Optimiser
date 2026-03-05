@@ -10,7 +10,11 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
-from .metrics import compute_ex_post_sharpe_ratio, compute_max_drawdown, compute_var, compute_cvar
+from .metrics import (
+    compute_ex_post_sharpe_ratio,
+    compute_max_drawdown,
+    compute_volatility_reduction,
+)
 
 
 @dataclass
@@ -89,8 +93,11 @@ class PairsBacktestEngine:
         # 4. Build trade log
         trades = self._build_trade_log(positions, zscore)
 
-        # 5. Compute performance metrics
-        metrics = self._compute_metrics(daily_returns, trades)
+        # 5. Compute performance metrics (incl. volatility reduction vs equal-weight B&H)
+        y_ret = y_prices.pct_change()
+        x_ret = x_prices.pct_change()
+        benchmark_returns = (0.5 * y_ret + 0.5 * x_ret).reindex(daily_returns.index).fillna(0.0)
+        metrics = self._compute_metrics(daily_returns, trades, benchmark_returns)
 
         return BacktestResult(
             daily_returns=daily_returns,
@@ -219,7 +226,10 @@ class PairsBacktestEngine:
         return pd.DataFrame(records)
 
     def _compute_metrics(
-        self, daily_returns: pd.Series, trades: pd.DataFrame
+        self,
+        daily_returns: pd.Series,
+        trades: pd.DataFrame,
+        benchmark_returns: pd.Series | None = None,
     ) -> dict:
         """Aggregate performance metrics using existing metric functions."""
         valid_returns = daily_returns.dropna()
@@ -233,22 +243,31 @@ class PairsBacktestEngine:
                 "win_rate": np.nan,
                 "profit_factor": np.nan,
                 "annualised_volatility": np.nan,
-                "var_95": np.nan,
-                "cvar_95": np.nan,
+                "volatility_reduction": np.nan,
             }
 
         sharpe = compute_ex_post_sharpe_ratio(valid_returns)
         max_dd = compute_max_drawdown(valid_returns)
         total_return = float((1 + valid_returns).prod() - 1)
         ann_vol = float(valid_returns.std(ddof=1) * np.sqrt(252))
-        var_95 = compute_var(valid_returns, confidence=0.95)
-        cvar_95 = compute_cvar(valid_returns, confidence=0.95)
+
+        # Volatility reduction vs benchmark (e.g. equal-weight B&H of the two legs)
+        if benchmark_returns is not None:
+            valid_b = daily_returns.notna() & benchmark_returns.notna()
+            if valid_b.sum() >= 2:
+                try:
+                    vol_red = compute_volatility_reduction(
+                        daily_returns[valid_b], benchmark_returns[valid_b]
+                    )
+                except (ValueError, ZeroDivisionError):
+                    vol_red = np.nan
+            else:
+                vol_red = np.nan
+        else:
+            vol_red = np.nan
 
         # Trade-level stats
         num_round_trips = len(trades[trades["direction"] == "exit"])
-
-        # Win rate from return between entry-exit pairs
-        exits = trades[trades["direction"] == "exit"]
         entries = trades[trades["direction"].str.startswith("entry")]
         n_entries = len(entries)
 
@@ -272,6 +291,5 @@ class PairsBacktestEngine:
             "win_rate": win_rate,
             "profit_factor": profit_factor,
             "annualised_volatility": ann_vol,
-            "var_95": var_95,
-            "cvar_95": cvar_95,
+            "volatility_reduction": vol_red,
         }

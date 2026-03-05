@@ -19,7 +19,7 @@ def compute_ex_post_sharpe_ratio(returns: pd.Series, rf_annual: float = 0.02, pe
     
     Returns:
     --------
-    float: Annualised ex-post Sharpe ratio [web:179]
+    float: Annualised ex-post Sharpe ratio
     """
     if len(returns) < 2:
         raise ValueError("Need at least 2 returns for std dev")
@@ -59,55 +59,6 @@ def compute_max_drawdown(returns: pd.Series) -> float:
     drawdowns = (cum_returns - rolling_max) / rolling_max
 
     return float(drawdowns.min())
-
-
-def compute_var(returns: pd.Series, confidence: float = 0.95) -> float:
-    """
-    Historical Value-at-Risk (VaR).
-
-    Returns the loss threshold such that losses exceed this value only
-    (1 - confidence)% of the time.  Reported as a negative number
-    (e.g. -0.02 means a 2% daily loss at the given confidence level).
-
-    Parameters
-    ----------
-    returns : pd.Series
-        Daily portfolio returns.
-    confidence : float
-        Confidence level, e.g. 0.95 for 95% VaR.
-
-    Returns
-    -------
-    float: VaR as a negative fraction.
-    """
-    if len(returns) < 2:
-        raise ValueError("Need at least 2 returns to compute VaR")
-    return float(np.percentile(returns.dropna(), (1 - confidence) * 100))
-
-
-def compute_cvar(returns: pd.Series, confidence: float = 0.95) -> float:
-    """
-    Conditional Value-at-Risk (CVaR) / Expected Shortfall.
-
-    Mean of all returns that fall below the VaR threshold — captures
-    the expected loss in the worst (1 - confidence)% of days.
-
-    Parameters
-    ----------
-    returns : pd.Series
-        Daily portfolio returns.
-    confidence : float
-        Confidence level, e.g. 0.95 for 95% CVaR.
-
-    Returns
-    -------
-    float: CVaR as a negative fraction.
-    """
-    if len(returns) < 2:
-        raise ValueError("Need at least 2 returns to compute CVaR")
-    var = compute_var(returns, confidence)
-    tail = returns[returns <= var]
-    return float(tail.mean()) if len(tail) > 0 else var
 
 
 def compute_volatility_reduction(portfolio_returns: pd.Series, benchmark_returns: pd.Series, periods_per_year: int = 252) -> float:

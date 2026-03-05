@@ -23,6 +23,10 @@ TICKERS = [
     "MSFT.O",   # Microsoft
     "META.O",   # Meta
     "GOOGL.O",  # Alphabet
+
+    # Healthcare (Pharma)
+    "JNJ.N",    # Johnson & Johnson
+    "PFE.N",    # Pfizer
 ]
 
 # Candidate pairs by sector (for cointegration testing)
@@ -35,6 +39,7 @@ CANDIDATE_PAIRS = [
     ("XOM.N",  "CVX.N"),    # Energy
     ("AMZN.O", "MSFT.O"),   # Cloud
     ("META.O", "GOOGL.O"),  # Digital Advertising
+    ("JNJ.N",  "PFE.N"),    # Healthcare Pharma
 ]
 
 
@@ -54,12 +59,14 @@ TICKER_NAMES = {
     "MSFT.O":  "Microsoft",
     "META.O":  "Meta",
     "GOOGL.O": "Alphabet",
+    "JNJ.N":   "Johnson & Johnson",
+    "PFE.N":   "Pfizer",
 }
 
 # Date ranges
 TRAIN_START = "2020-01-01"
 TRAIN_END   = "2023-12-31"   # in-sample
 TEST_START  = "2024-01-01"   # out-of-sample
-TEST_END    = "2025-01-01"
+TEST_END    = "2025-12-31"
 
 INTERVAL = "1d"

@@ -83,6 +83,7 @@ _FIELD_RENAME = {
     "LOW":       "Low",
     "TRDPRC_1":  "Close",
     "ACVOL_UNS": "Volume",
+    "MKT_CAP":   "Market_Cap",
 }
 
 # --- Column normalisation (applied to every fresh fetch) ---
@@ -272,3 +273,18 @@ def get_ohlcv(tickers, start=None, end=None, interval="1d", use_cache=True):
         tickers, start=start, end=end, interval=interval,
         fields=["OPEN", "HIGH", "LOW", "TRDPRC_1", "ACVOL_UNS"], use_cache=use_cache
     )
+
+def get_market_cap(tickers, start=None, end=None, interval="1d", use_cache=True):
+    """Return historical market capitalisation series for one or more tickers.
+
+    Single ticker  → Series named 'Market_Cap'.
+    Multiple tickers → DataFrame with one column per ticker.
+
+    The underlying LSEG field is MKT_CAP (local-currency market cap).
+    """
+    df = get_price_timeseries(
+        tickers, start=start, end=end, interval=interval,
+        fields=["TR.CompanyMarketCap"], use_cache=use_cache,
+    )
+
+    return df 
