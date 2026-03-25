@@ -1,0 +1,32 @@
+\contentsline {chapter}{\numberline {1}Introduction}{2}{}%
+\contentsline {section}{\numberline {1.1}Section 1}{2}{}%
+\contentsline {subsection}{\numberline {1.1.1}Sub-Section 1}{2}{}%
+\contentsline {section}{\numberline {1.2}Mathematical Notation}{2}{}%
+\contentsline {chapter}{\numberline {2}Background and Literature Review}{3}{}%
+\contentsline {section}{\numberline {2.1}Main Content}{3}{}%
+\contentsline {section}{\numberline {2.2}More Content}{3}{}%
+\contentsline {section}{\numberline {2.3}Summary}{3}{}%
+\contentsline {chapter}{\numberline {3}Analysis}{4}{}%
+\contentsline {section}{\numberline {3.1}Methodology}{4}{}%
+\contentsline {section}{\numberline {3.2}Implementation Details}{4}{}%
+\contentsline {chapter}{\numberline {4}Testing and Results}{5}{}%
+\contentsline {section}{\numberline {4.1}Testing Methodology}{5}{}%
+\contentsline {section}{\numberline {4.2}Results}{5}{}%
+\contentsline {subsection}{\numberline {4.2.1}Cointegration Screening}{5}{}%
+\contentsline {subsection}{\numberline {4.2.2}Spread Characterisation}{5}{}%
+\contentsline {subsection}{\numberline {4.2.3}Cointegration Validation}{13}{}%
+\contentsline {subsection}{\numberline {4.2.4}Return Estimation}{19}{}%
+\contentsline {subsection}{\numberline {4.2.5}Backtesting Results}{23}{}%
+\contentsline {chapter}{\numberline {5}Dashboard}{33}{}%
+\contentsline {chapter}{\numberline {6}Discussion}{34}{}%
+\contentsline {section}{\numberline {6.1}Interpretation of Results}{34}{}%
+\contentsline {chapter}{\numberline {7}Conclusions and Evaluation}{35}{}%
+\contentsline {section}{\numberline {7.1}Achievements}{35}{}%
+\contentsline {section}{\numberline {7.2}Evaluation}{35}{}%
+\contentsline {section}{\numberline {7.3}Future Work}{35}{}%
+\contentsline {chapter}{Bibliography}{35}{}%
+\contentsline {chapter}{Appendices}{37}{}%
+\contentsline {chapter}{\numberline {A}Selected US Equities: Candidate Universe for Pair Selection}{37}{}%
+\contentsline {chapter}{\numberline {B}Design Diagram of the Dashboard with Excalidraw}{38}{}%
+\contentsline {chapter}{\numberline {C}Project Plan}{39}{}%
+\contentsline {chapter}{\numberline {D}Interim Report}{40}{}%

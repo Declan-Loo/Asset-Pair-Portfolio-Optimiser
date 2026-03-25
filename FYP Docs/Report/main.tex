@@ -1,0 +1,703 @@
+\documentclass[a4paper]{report}
+\usepackage{setspace}
+
+\pagestyle{plain}
+\usepackage{amssymb,graphicx,color}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage[section]{placeins}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage[a4paper, margin = 3cm, bottom = 2.5cm]{geometry}
+
+\newtheorem{theorem}{THEOREM}
+\newtheorem{lemma}[theorem]{LEMMA}
+\newtheorem{corollary}[theorem]{COROLLARY}
+\newtheorem{proposition}[theorem]{PROPOSITION}
+\newtheorem{remark}[theorem]{REMARK}
+\newtheorem{definition}[theorem]{DEFINITION}
+\newtheorem{fact}[theorem]{FACT}
+
+\newtheorem{problem}[theorem]{PROBLEM}
+\newtheorem{exercise}[theorem]{EXERCISE}
+\def \set#1{\{#1\} }
+
+\newenvironment{proof}{%
+  PROOF: \begin{quotation}%
+}{%
+  $\Box$ \end{quotation}%
+}
+
+\newcommand{\nats}{\mbox{\( \mathbb N \)}}
+\newcommand{\rat}{\mbox{\(\mathbb Q\)}}
+\newcommand{\rats}{\mbox{\(\mathbb Q\)}}
+\newcommand{\reals}{\mbox{\(\mathbb R\)}}
+\newcommand{\ints}{\mbox{\(\mathbb Z\)}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\thefootnote}{}
+
+
+\title{{\vspace{-14em}}%
+{{\Huge Cointegration-Based Spread Prediction for Mean-Variance Portfolio Optimisation }}\\
+{\large Evaluating whether spread prediction between cointegrated asset pairs produces more reliable return estimates than historical means for Markowitz optimisation }\\
+}
+\date{Submission date: 24th April 2026}
+\author{Declan Loo\thanks{
+{\bf Disclaimer:}
+This report is submitted as part requirement for the BSc Degree in Computer Science at UCL. It is
+substantially the result of my own work except where explicitly indicated in the text. The report may be freely copied and distributed provided the source is explicitly acknowledged.
+}%
+\\ \\
+BSc Computer Science\\ \\
+Supervisor's name: Dr. Tomaso Aste}
+
+
+\begin{document}
+
+\onehalfspacing
+\maketitle
+\begin{abstract}
+Summarise your report concisely.
+\end{abstract}
+
+\tableofcontents
+\setcounter{page}{1}
+
+
+\chapter{Introduction}
+This is just a bare minimum to get started.  There is unlimited guidance on using latex, e.g., {\tt https://en.wikibooks.org/wiki/LaTeX}.   You are still responsible to check the detailed requirements of a project, including formatting instructions, see \\
+{\tt https://moodle.ucl.ac.uk/pluginfile.php/3591429/mod\_resource/content/7/UGProjects2017.pdf}.
+Leave at least a line of white space when you want to start a new paragraph.
+
+\section{Section 1}
+Chapters should contain numbered sections and sub-sections.
+
+\subsection{Sub-Section 1}
+Remember that this is a structured technical/academic report, not an essay.
+
+\section{Mathematical Notation}
+Mathematical expressions are placed inline between dollar signs, e.g. $\sqrt 2, \sum_{i=0}^nf(i)$, or in display mode
+\[ e^{i\pi}=-1\] and another way, this time with labels,
+\begin{align}
+\label{line1} A=B\wedge B=C&\rightarrow A=C\\
+&\rightarrow C=A\\
+\intertext{note that}
+n!&=\prod_{1\leq i\leq n}i \\
+\int_{x=1}^y \frac 1 x \mathrm{d}x&=\log y
+\end{align}
+We can refer to labels like this \eqref{line1}.
+
+\chapter{Background and Literature Review}
+
+The main chapters should start with a brief summary -- this chapter is about, or introduces, some aspect of the work.
+
+\section{Main Content}
+Often lots of citations here (and elsewhere), e.g. \cite{Rey:D} or \cite[Theorem 2.3]{PriorNOP70}.   Bibtex can help with this, but is not essential. If you want pictures, try
+
+\begin{center}
+\end{center}
+You can use
+\begin{itemize}
+\item lists
+\item like this
+\end{itemize}
+or numbered
+\begin{enumerate}
+\item like this,
+\item or this
+\end{enumerate}
+but don't overdo it.
+
+\section{More Content}
+
+\section{Summary}
+The main chapters should have a short summary, highlighting what the chapter has covered and any key points that need emphasising.
+
+\chapter{Analysis}
+If you have a formal theorem you might try this.
+\begin{definition}\label{def}
+See definition~\ref{def}.
+\end{definition}
+\begin{theorem}
+For all $n\in\nats,\; 1^n=1$.
+\end{theorem}
+\begin{proof}
+By induction over $n$.
+\end{proof}
+
+\section{Methodology}
+
+\section{Implementation Details}
+
+\chapter{Testing and Results}
+
+\section{Testing Methodology}
+
+\section{Results}
+
+\subsection{Cointegration Screening}
+
+\begin{table}[htbp]
+\centering
+\caption{Engle-Granger Cointegration Screening Results (9 Candidate Pairs, In-Sample: Jan 2019 -- Dec 2023)}
+\label{tab:cointegration_screening}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l l c c c c c c c}
+\toprule
+Dependent & Independent & Hedge Ratio ($\hat{\beta}$) & Intercept ($\hat{\alpha}$) & ADF Stat & $p$-value & $y$ is $I(1)$ & $x$ is $I(1)$ & Cointegrated \\
+\midrule
+GS.N  & MS.N   & 0.780 &  2.351 & $-$3.667 & 0.020 & Yes & Yes & \textbf{Yes} \\
+KO.N  & PEP.O  & 0.641 &  0.789 & $-$3.470 & 0.035 & Yes & Yes & \textbf{Yes} \\
+CVX.N & XOM.N  & 0.698 &  1.813 & $-$3.234 & 0.064 & Yes & Yes & No \\
+AMD.O & NVDA.O & 0.811 &  1.999 & $-$2.310 & 0.368 & Yes & Yes & No \\
+AMZN.O & MSFT.O & 0.516 & 2.027 & $-$2.141 & 0.455 & Yes & Yes & No \\
+JNJ.N & PFE.N  & 0.423 &  3.466 & $-$1.908 & 0.576 & Yes & Yes & No \\
+META.O & GOOGL.O & 0.543 & 2.953 & $-$1.681 & 0.685 & Yes & Yes & No \\
+TSM.N  & NVDA.O  & 0.476 & 3.071 & $-$1.340 & 0.817 & Yes & Yes & No \\
+BAC.N  & JPM.N   & 0.854 & $-$0.666 & $-$1.230 & 0.850 & Yes & Yes & No \\
+\bottomrule
+\multicolumn{9}{l}{\footnotesize Augmented Engle-Granger test with MacKinnon (1994) critical values at 5\% significance ($p<0.05$). Log prices used throughout.} \\
+\multicolumn{9}{l}{\footnotesize $I(1)$ verified by ADF on levels (non-stationary) and first differences (stationary). Sorted by $p$-value.} \\
+\multicolumn{9}{l}{\footnotesize Source: Author's calculations on \texttt{01\_spread\_exploration.ipynb}.}
+\end{tabular}%
+}
+\end{table}
+
+\subsection{Spread Characterisation}
+
+Based on the results in Table~\ref{tab:cointegration_screening}, two pairs were confirmed cointegrated at the 5\% significance level: GS.N/MS.N and KO.N/PEP.O. CVX.N/XOM.N was borderline ($p = 0.064$) and excluded. Spreads for each confirmed pair are computed as the OLS residual $S_t = \ln P^y_t - \hat{\beta}\ln P^x_t - \hat{\alpha}$ and characterised by their half-life, Hurst exponent, z-score, and spread statistics.
+
+Table~\ref{tab:spread_characterisation} and Figures~\ref{fig:normalised_prices}--\ref{fig:spread_rolling_zscore}
+present the spread characterisation results for the two cointegrated pairs.
+
+\begin{table}[htbp]
+\centering
+\caption{Spread Characterisation Summary --- Cointegrated Pairs (In-Sample: Jan 2019 -- Dec 2023)}
+\label{tab:spread_characterisation}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l l c c c c c c c}
+\toprule
+Dependent & Independent & Half-Life (days) & Hurst Exponent & Current $z$-Score & Spread Mean ($\mu_S$) & Spread Std ($\sigma_S$) & ADF Stat & ADF $p$-value \\
+\midrule
+GS.N  & MS.N  & 41.8 & 0.403 & 0.675 & 0.000 & 0.056 & $-$3.666 & 0.005 \\
+KO.N  & PEP.O & 40.3 & 0.421 & 0.809 & 0.000 & 0.047 & $-$3.469 & 0.009 \\
+\bottomrule
+\multicolumn{9}{l}{\footnotesize Half-life estimated via AR(1)/OU regression: $\kappa = \ln(2)/\text{half-life}$ gives $\kappa \approx 0.0166$ (GS/MS) and $0.0172$ (KO/PEP).} \\
+\multicolumn{9}{l}{\footnotesize Hurst exponent $H < 0.5$ indicates mean-reverting (anti-persistent) dynamics. $z$-score uses 60-day rolling window at end of training period.} \\
+\multicolumn{9}{l}{\footnotesize Spread mean is zero by construction (demeaned OLS residuals). Source: Author's calculations on \texttt{01\_spread\_exploration.ipynb}.}
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/01_normalised_prices.pdf}
+    \caption{Normalised log price series for the two cointegrated pairs over
+    the in-sample period (January 2019 -- December 2023). Each series is
+    normalised to zero at the start of the sample period to highlight co-movement.
+    (a)~KO/PEP (Consumer Staples); (b)~GS/MS (Financials).}
+    \label{fig:normalised_prices}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/01_spread_characterisation.pdf}
+    \caption{Spread characterisation summary for the two cointegrated pairs
+    (January 2019 -- December 2023).
+    (a) Half-life of mean reversion in trading days; dashed line marks the 60-day threshold.
+    (b) Hurst exponent; dashed line marks the random walk boundary of 0.5.
+    (c) Current $z$-score at the end of the training window; dotted lines mark $\pm2\sigma$.
+    (d) ADF $p$-value on the spread; dashed line marks the 5\% significance level.
+    Hatched bars indicate pairs that fail the respective threshold.}
+    \label{fig:spread_characterisation}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/01_spread_levels.pdf}
+    \caption{Spread levels with $\pm1\sigma$ and $\pm2\sigma$ bands for each
+    cointegrated pair over the in-sample period (January 2019 -- December 2023).
+    The spread is defined as $S_t = \ln P^y_t - \hat{\beta}\ln P^x_t - \hat{\alpha}$.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:spread_levels}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/01_spread_zscores.pdf}
+    \caption{Rolling $z$-scores (60-day window) for the two cointegrated pairs
+    over the in-sample period (January 2019 -- December 2023). Dotted lines mark
+    the $\pm2\sigma$ entry thresholds. The $z$-score at the end of the training
+    window feeds directly into the OU-implied return estimation.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:spread_zscores}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/01_spread_distributions.pdf}
+    \caption{Empirical spread distributions with overlaid normal density fits
+    for the two cointegrated pairs (January 2019 -- December 2023).
+    The spread mean is zero by construction as the OLS residual includes an intercept.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:spread_distributions}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/01_spread_rolling_halflife.pdf}
+    \caption{Rolling half-life of mean reversion (252-day window, EWM 21-day smoothed).
+    Dashed line denotes the 60-day tradeability threshold.
+    Shaded regions indicate periods where the smoothed half-life exceeded the threshold.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:spread_rolling_halflife}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/01_spread_rolling_zscore.pdf}
+    \caption{Rolling 60-day $z$-score for each cointegrated pair over the
+    in-sample period (January 2019 -- December 2023). Dashed and dotted
+    lines mark the $\pm1\sigma$ and $\pm2\sigma$ thresholds respectively;
+    shaded regions indicate periods where the $z$-score exceeds $\pm2\sigma$,
+    corresponding to potential entry signals.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:spread_rolling_zscore}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Cointegration Validation}
+
+Out-of-sample spreads are constructed using hedge ratios and intercepts
+estimated solely on the in-sample period, ensuring no forward-looking
+information is incorporated. Table~\ref{tab:oos_spread_stats} presents
+the distributional shift in each spread across the IS and OOS periods,
+while Table~\ref{tab:cointegration_validation} reports the formal
+statistical test results. Figure~\ref{fig:oos_eg_pvalues} presents
+the full IS vs OOS Engle-Granger $p$-value comparison across all
+nine candidate pairs.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Spread statistics across in-sample (IS: January 2019 -- December
+    2023) and out-of-sample (OOS: January 2024 -- December 2025) periods,
+    constructed using in-sample hedge ratios.}
+    \label{tab:oos_spread_stats}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lcccccccc}
+        \toprule
+        & \multicolumn{2}{c}{Mean} & \multicolumn{2}{c}{Std Dev} & \multicolumn{2}{c}{Min} & \multicolumn{2}{c}{Max} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+        Pair & IS & OOS & IS & OOS & IS & OOS & IS & OOS \\
+        \midrule
+        GS/MS   & 0.000 & $+$0.250 & 0.056 & 0.082 & $-$0.145 & $+$0.067 & $+$0.110 & $+$0.411 \\
+        KO/PEP  & 0.000 & $+$0.170 & 0.047 & 0.110 & $-$0.173 & $-$0.016 & $+$0.111 & $+$0.367 \\
+        \bottomrule
+        \multicolumn{9}{l}{\footnotesize GS/MS OOS minimum of $+0.067$ lies entirely above the IS mean, indicating the spread never revisited its historical equilibrium.} \\
+        \multicolumn{9}{l}{\footnotesize Source: Author's calculations on \texttt{02\_cointegration\_validation.ipynb}.}
+    \end{tabular}%
+    }
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Cointegration validation statistics across IS (January 2019 --
+    December 2023) and OOS (January 2024 -- December 2025) periods. ADF
+    $p$-values below 0.05 indicate spread stationarity at the 5\% significance
+    level. Half-life below 60 trading days and Hurst exponent below 0.5
+    indicate mean reversion.}
+    \label{tab:cointegration_validation}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lccccccc}
+        \toprule
+        & \multicolumn{2}{c}{ADF $p$-value}
+        & \multicolumn{2}{c}{Half-Life (days)}
+        & \multicolumn{2}{c}{Hurst Exponent}
+        & OOS \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+        Pair & IS & OOS & IS & OOS & IS & OOS & $z$-score \\
+        \midrule
+        GS/MS   & 0.005 & 0.452 & 41.8 &  81.1 & 0.403 & 0.362 & 1.015 \\
+        KO/PEP  & 0.009 & 0.622 & 40.3 & 156.4 & 0.421 & 0.575 & 0.604 \\
+        \bottomrule
+        \multicolumn{8}{l}{\footnotesize Neither spread remains stationary OOS using IS hedge ratios. KO/PEP Hurst crosses above 0.5, indicating transition to near-random-walk behaviour.} \\
+        \multicolumn{8}{l}{\footnotesize Source: Author's calculations on \texttt{02\_cointegration\_validation.ipynb}.}
+    \end{tabular}%
+    }
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/02_oos_eg_pvalues.pdf}
+    \caption{IS vs OOS Engle-Granger $p$-values for all nine candidate pairs.
+    Hatched bars indicate pairs that fail the 5\% significance threshold.
+    GS/MS is the only pair persistent across both periods. KO/PEP degrades
+    OOS; NVDA/TSM appears cointegrated OOS but is invalidated by NVDA.O
+    failing the $I(1)$ precondition due to explosive price growth in 2024--2025.}
+    \label{fig:oos_eg_pvalues}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/02_spread_is_oos_concat.pdf}
+    \caption{Spread levels across the full sample period (January 2019 --
+    December 2025). The dashed vertical line marks the IS/OOS boundary
+    (January 2024). Horizontal lines and shading denote IS $\pm1\sigma$
+    and $\pm2\sigma$ bands; persistent OOS displacement beyond these bounds
+    indicates a structural break in the cointegrating relationship.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:spread_is_oos_concat}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/02_spread_oos_levels.pdf}
+    \caption{Spread levels over the out-of-sample period (January 2024 --
+    December 2025), constructed using in-sample hedge ratios and intercepts.
+    Horizontal lines denote the IS mean and $\pm2\sigma$ bands estimated
+    over the training window.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:spread_oos_levels}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/02_zscore_is_oos.pdf}
+    \caption{Rolling 60-day $z$-score across the full sample period
+    (January 2019 -- December 2025). The dashed vertical line marks the
+    IS/OOS boundary. Shaded regions indicate $|z|>2\sigma$ exceedances.
+    Persistent non-zero $z$-scores in the OOS period are consistent with
+    a shift in the spread equilibrium level.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:zscore_is_oos}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/02_rolling_halflife_is_oos.pdf}
+    \caption{Rolling half-life of mean reversion across the full sample
+    period (January 2019 -- December 2025). Faint lines show raw estimates;
+    bold lines show 21-day exponentially weighted smoothed values. The dashed
+    horizontal line marks the 60-day tradability threshold. The dashed vertical
+    line marks the IS/OOS boundary.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:rolling_halflife_is_oos}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Return Estimation}
+
+OU-implied expected returns are derived from the end-of-IS $z$-score for each
+confirmed pair. A positive $z$-score (spread above mean) implies the spread is
+expected to fall, producing a negative OU-implied return; a negative $z$-score
+implies the spread is expected to rise, producing a positive return.
+Table~\ref{tab:return_estimation} presents the sanity check confirming directional
+consistency between the $z$-score and OU-implied return signal.
+
+\begin{table}[htbp]
+\centering
+\caption{End-of-sample $z$-score validation and OU-implied expected returns (IS period: Jan 2019 -- Dec 2023)}
+\label{tab:return_estimation}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrll}
+\toprule
+Pair & End-of-IS $z$-Score & OU-Implied $\mu$ (ann.) & Historical $\mu$ (ann.) & Signal & Consistent \\
+\midrule
+GS/MS  & $+$1.739 & $-$10.69\% & GS: $+$11.9\%, MS: $+$15.5\% & Spread well above mean & Yes \\
+KO/PEP & $-$0.759 & $+$1.93\%  & KO: $+$6.4\%,\ PEP: $+$8.3\% & Spread below mean      & Yes \\
+\bottomrule
+\multicolumn{6}{l}{\footnotesize OU-implied $\mu$ computed via rolling 60-day OU model, annualised at 252 trading days per year.} \\
+\multicolumn{6}{l}{\footnotesize Historical $\mu$ is the annualised sample mean of daily returns over the IS period.} \\
+\multicolumn{6}{l}{\footnotesize Source: Author's calculations on \texttt{03\_return\_estimation.ipynb}.}
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/03_cumulative_returns.pdf}
+    \caption{Cumulative returns of each cointegrated spread versus its constituent
+    assets over the in-sample period (January 2019 -- December 2023). All series
+    are indexed to 1.0 at the start. The spread return reflects the daily change in
+    the OLS residual $S_t = \ln P^y_t - \hat{\beta}\ln P^x_t - \hat{\alpha}$.
+    (a)~KO/PEP; (b)~GS/MS.}
+    \label{fig:cumulative_returns_is}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/03_mu_comparison.pdf}
+    \caption{Expected return estimates (annualised, IS 2019--2023).
+    (a)~OU-implied $\mu$ by pair: GS/MS has a large negative implied return
+    (spread well above equilibrium at end of IS); KO/PEP has a small positive
+    implied return (spread slightly below equilibrium).
+    (b)~Historical mean $\mu$ by ticker: all four assets exhibit positive
+    historical means, producing a very different allocation under mean-variance
+    optimisation.}
+    \label{fig:mu_comparison}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figures/03_correlation_heatmap.pdf}
+    \caption{Asset return correlation matrix for the four constituent tickers
+    (GS.N, KO.N, MS.N, PEP.O) estimated over the in-sample period
+    (January 2019 -- December 2023) using Ledoit-Wolf shrinkage covariance.
+    GS and MS exhibit the highest within-pair correlation, consistent with
+    their financial sector co-movement.}
+    \label{fig:correlation_heatmap}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Backtesting Results}
+
+Table~\ref{tab:backtest_results} reports out-of-sample portfolio performance metrics
+over the test period (January 2024 -- December 2025). The OU-Implied MPT portfolio
+operates in spread space (GS/MS and KO/PEP as assets) under minimum-variance
+weights; the Historical MPT portfolio operates in asset space (GS.N, KO.N, MS.N,
+PEP.O) under minimum-variance weights with historical mean returns.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Out-of-sample portfolio performance metrics (test period: January 2024 -- December 2025). Vol.\ Reduction is relative to the equal-weight baseline; negative values indicate higher volatility than equal-weight.}
+    \label{tab:backtest_results}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lrrrrr}
+    \toprule
+     & Sharpe Ratio & Max Drawdown & Total Return & Ann.\ Volatility & Vol.\ Reduction \\
+    \midrule
+    OU-Implied MPT   & 1.359 & $-$8.7\%  & $+$34.2\% & 9.8\%  & $+$0.5\% \\
+    Historical MPT   & 0.335 & $-$14.3\% & $+$12.1\% & 14.1\% & $-$43.4\% \\
+    Equal-Weight     & 1.363 & $-$8.4\%  & $+$34.5\% & 9.8\%  & --- \\
+    Buy \& Hold      & 1.403 & $-$30.0\% & $+$108.0\%& 27.5\% & --- \\
+    S\&P 500 (SPY)   & 1.110 & $-$18.9\% & $+$44.3\% & 16.0\% & --- \\
+    \bottomrule
+    \multicolumn{6}{l}{\footnotesize Minimum-variance weights used for both MPT portfolios. Risk-free rate: 2\% p.a.} \\
+    \multicolumn{6}{l}{\footnotesize Source: Author's calculations on \texttt{04\_backtest\_results.ipynb}.}
+    \end{tabular}%
+    }
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Per-pair $z$-score mean-reversion backtest metrics (OOS: January 2024 -- December 2025). Entry at $\pm2.0\sigma$, exit at $\pm0.5\sigma$.}
+    \label{tab:perpair_backtest}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lrrrrrrrr}
+    \toprule
+    Pair & Sharpe & Max DD & Total Return & Ann.\ Vol & Trades & Days in Position & Win Rate \\
+    \midrule
+    GS.N/MS.N   & $-$0.285 & $-$20.7\% & $-$8.4\% & 17.2\% & 9 & 283 & 50.2\% \\
+    KO.N/PEP.O  & $-$0.665 & $-$15.1\% & $-$6.3\% &  7.5\% & 8 & 312 & 47.8\% \\
+    \bottomrule
+    \multicolumn{8}{l}{\footnotesize Negative Sharpe ratios are consistent with OOS cointegration breakdown identified in \texttt{02\_cointegration\_validation.ipynb}.} \\
+    \multicolumn{8}{l}{\footnotesize Source: Author's calculations on \texttt{04\_backtest\_results.ipynb}.}
+    \end{tabular}%
+    }
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/04_cumulative_returns.pdf}
+    \caption{Cumulative growth of \$1 invested at the start of the OOS period
+    (January 2024 -- December 2025) for the OU-Implied MPT, Historical MPT,
+    equal-weight, and S\&P 500 benchmarks. The OU-Implied and equal-weight
+    portfolios track closely throughout; the Historical MPT underperforms
+    substantially.}
+    \label{fig:oos_cumulative_returns}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/04_drawdown.pdf}
+    \caption{Peak-to-trough drawdown over the OOS period (January 2024 --
+    December 2025). Lower (closer to zero) is better. The OU-Implied MPT
+    achieves a maximum drawdown of $-8.7\%$, substantially lower than the
+    Historical MPT ($-14.3\%$) and S\&P 500 ($-18.9\%$).}
+    \label{fig:oos_drawdown}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/04_rolling_sharpe.pdf}
+    \caption{Rolling 60-day Sharpe ratio over the OOS period (January 2024 --
+    December 2025). Time-varying risk-adjusted performance computed over a
+    trailing 60-day window. Periods above zero indicate positive risk-adjusted
+    returns in that window.}
+    \label{fig:oos_rolling_sharpe}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/04_rolling_volatility.pdf}
+    \caption{Rolling 60-day annualised volatility over the OOS period
+    (January 2024 -- December 2025). The OU-Implied MPT maintains
+    substantially lower and more stable volatility than the Historical
+    MPT throughout the test period.}
+    \label{fig:oos_rolling_volatility}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/04_weights_bar.pdf}
+    \caption{Minimum-variance portfolio weights for both approaches.
+    (a)~OU-Implied MPT: 46.6\% GS/MS spread, 53.4\% KO/PEP spread.
+    (b)~Historical MPT: 11.7\% GS.N, 48.7\% KO.N, 0.0\% MS.N, 39.7\% PEP.O.
+    The historical allocation concentrates heavily in KO and PEP due to their
+    lower variance, while zeroing out MS.N.}
+    \label{fig:portfolio_weights}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/04_pair_cumulative_returns.pdf}
+    \caption{Cumulative returns from the $z$-score mean-reversion backtest engine
+    for each cointegrated pair over the OOS period (January 2024 -- December 2025).
+    Both pairs generate negative cumulative returns, consistent with persistent
+    spread drift rather than mean reversion under IS-calibrated thresholds.
+    (a)~GS.N/MS.N; (b)~KO.N/PEP.O.}
+    \label{fig:pair_cumulative_returns}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/04_pair_zscores.pdf}
+    \caption{Rolling $z$-scores with entry ($\pm2.0\sigma$) and exit ($\pm0.5\sigma$)
+    thresholds for each cointegrated pair over the OOS period. Trade entry and exit
+    points are marked. Persistent positive $z$-scores reflect the level shift in both
+    spreads identified in the validation stage.
+    (a)~GS.N/MS.N; (b)~KO.N/PEP.O.}
+    \label{fig:pair_zscores}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figures/04_efficient_frontier.pdf}
+    \caption{Mean-variance efficient frontiers for both the OU-Implied (spread
+    space) and Historical (asset space) portfolios. The two frontiers are not
+    directly comparable as they operate over different asset universes. The
+    minimum-variance portfolios used in the backtest are marked on each frontier.}
+    \label{fig:efficient_frontier}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/04_return_distribution.pdf}
+    \caption{Histogram of daily portfolio returns for the OU-Implied and Historical
+    MPT portfolios over the OOS period (January 2024 -- December 2025). The
+    OU-Implied distribution is narrower and more concentrated around positive values,
+    reflecting its lower volatility and higher mean return.
+    (a)~OU-Implied MPT; (b)~Historical MPT.}
+    \label{fig:return_distribution}
+\end{figure}
+
+\FloatBarrier
+
+\chapter{Dashboard}
+
+\chapter{Discussion}
+
+\section{Interpretation of Results}
+
+Table~\ref{tab:spread_characterisation} shows that both cointegrated pairs exhibit
+half-lives between 40 and 42 trading days and Hurst exponents below 0.5, confirming
+statistically significant mean-reverting behaviour over the in-sample period. ADF tests
+on the spread residuals reject the unit root hypothesis at the 1\% significance level
+for both pairs, providing strong empirical support for the spread-based return
+estimation approach in-sample.
+
+However, Table~\ref{tab:cointegration_validation} reveals that neither spread
+remains stationary OOS when IS hedge ratios are applied, with ADF $p$-values rising
+to 0.452 and 0.622. This OOS breakdown directly affects the reliability of IS-calibrated
+return signals, as evidenced by the negative Sharpe ratios in the per-pair backtest
+(Table~\ref{tab:perpair_backtest}). Despite this, the portfolio-level OU-Implied MPT
+substantially outperforms the Historical MPT on all three evaluation metrics
+(Table~\ref{tab:backtest_results}), suggesting that the structural properties of
+the spread universe — low volatility and low market beta — provide resilience
+beyond the precision of the OU return estimates alone.
+
+\chapter{Conclusions and Evaluation}
+\section{Achievements}
+Summarise the achievements to confirm the project goals have been met.
+\section{Evaluation}
+Evaluation of the work (this may be in a separate chapter if there is substantial evaluation).
+
+\section{Future Work}
+How the project might be continued, but don't give the impression you ran out of time!
+
+The project could have continued by adding a rebalance option which allows the functionality of producing a portfolio with percentage of each asset and capital allocated in a way to minimise the number of transactions needed, to minimise transactional cost.
+
+\appendix
+\addcontentsline{toc}{chapter}{Bibliography}
+\begin{thebibliography}{HHM99}
+
+
+\bibitem[Pri70]{PriorNOP70}  %%only an example
+A.~Prior.
+\newblock The notion of the present.
+\newblock {\em Studium Generale}, 23:  245--248, 1970.
+
+
+\bibitem[Rey97]{Rey:D}
+M.~Reynolds.
+\newblock A decidable temporal logic of parallelism.
+\newblock {\em Notre Dame Journal of Formal Logic}, 38(3):  419--436,
+  1997.
+\end{thebibliography}
+\newpage
+\addcontentsline{toc}{chapter}{Appendices}
+
+\chapter{Selected US Equities: Candidate Universe for Pair Selection}
+
+\begin{table}[h!]
+\centering
+\caption{US Equity Candidate Universe ranked by Market Capitalisation}
+\label{tab:universe_mcap}
+\begin{tabular}{cllr}
+\toprule
+\textbf{Rank} & \textbf{Company} & \textbf{Symbol} & \textbf{Market Cap in USD (29 Dec 2023)} \\
+\midrule
+1 & Microsoft & MSFT.O & \$2,795B \\
+2 & Alphabet & GOOGL.O & \$1,755B \\
+3 & Amazon & AMZN.O & \$1,570B \\
+4 & Nvidia & NVDA.O & \$1,223B \\
+5 & Meta & META.O & \$910B \\
+6 & TSMC & TSM.N & \$501B \\
+7 & JPMorgan & JPM.N & \$492B \\
+8 & ExxonMobil & XOM.N & \$400B \\
+9 & J\&J & JNJ.N & \$377B \\
+10 & Costco & COST.O & \$293B \\
+11 & Chevron & CVX.N & \$281B \\
+12 & BofA & BAC.N & \$266B \\
+13 & Coca-Cola & KO.N & \$255B \\
+14 & AMD & AMD.O & \$238B \\
+15 & PepsiCo & PEP.O & \$234B \\
+16 & Intel & INTC.O & \$212B \\
+17 & Pfizer & PFE.N & \$163B \\
+18 & Morgan Stanley & MS.N & \$153B \\
+19 & Goldman Sachs & GS.N & \$126B \\
+20 & Schlumberger & SLB.N & \$74B \\
+21 & Target & TGT.N & \$66B \\
+22 & Halliburton & HAL.N & \$32B \\
+23 & Delta Airlines & DAL.N & \$26B \\
+24 & United Airlines & UAL.O & \$14B \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\chapter{Design Diagram of the Dashboard with Excalidraw}
+
+\chapter{Project Plan}
+
+\chapter{Interim Report}
+
+
+\end{document}

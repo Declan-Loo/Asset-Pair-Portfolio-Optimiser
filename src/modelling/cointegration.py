@@ -8,7 +8,10 @@ identifying cointegrated asset pairs with stationary residuals.
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
-from statsmodels.tsa.stattools import adfuller
+
+# adfuller() function performs the ADF test - second part of the Engle-Granger test
+# coint() function uses MacKinnon's (1991) critical values in ADF test (preferably use this over adfuller() to reduce false positives)
+from statsmodels.tsa.stattools import adfuller, coint
 
 
 def adf_test(series: pd.Series, significance: float = 0.05) -> dict:
@@ -38,6 +41,20 @@ def adf_test(series: pd.Series, significance: float = 0.05) -> dict:
         "is_stationary": result[1] < significance,
     }
 
+def is_I1(series: pd.Series, significance: float = 0.05) -> dict:
+    """
+    Check if a series is plausibly I(1):
+    - non-stationary in levels
+    - stationary in first differences
+    """
+    level_result = adf_test(series, significance=significance)
+    diff_result = adf_test(series.diff(), significance=significance)
+
+    return {
+        "level": level_result,
+        "diff": diff_result,
+        "is_I1": (not level_result["is_stationary"]) and diff_result["is_stationary"],
+    }
 
 def engle_granger_test(
     y: pd.Series,
@@ -63,27 +80,35 @@ def engle_granger_test(
                     critical_values, is_cointegrated
     """
     # Align and drop NaNs
-    aligned = pd.concat([y, x], axis=1).dropna()
+    aligned = pd.concat([y, x], axis=1).dropna().astype(float)
     y_clean, x_clean = aligned.iloc[:, 0], aligned.iloc[:, 1]
 
-    # Step 1 — OLS
+    # I(1) diagnostics (for reporting only)
+    y_I1 = is_I1(y_clean, significance=significance)
+    x_I1 = is_I1(x_clean, significance=significance)
+
+    
+    # Step 1 — OLS regression - get hedge ratio/intercept for trading
     X = sm.add_constant(x_clean)
     model = sm.OLS(y_clean, X).fit()
     intercept, hedge_ratio = model.params
 
-    # Step 2 — ADF on residuals
-    residuals = model.resid
-    adf_result = adf_test(residuals, significance=significance)
+    # Step 2 - Get CORRECT cointegration stats via `coint` function from `stattools` with MacKinnon (1991) critical values
+    # perform coiuntegration test with a constant, augmented Engle-Granger (AEG) and lag with minimised AIC
+    coint_stat, p_value, critical_values = coint(
+        y_clean, x_clean, trend="c", method="aeg", autolag="AIC"
+    )
 
     return {
         "hedge_ratio": float(hedge_ratio),
         "intercept": float(intercept),
-        "adf_stat": adf_result["adf_stat"],
-        "p_value": adf_result["p_value"],
-        "critical_values": adf_result["critical_values"],
-        "is_cointegrated": adf_result["is_stationary"],
+        "adf_stat": float(coint_stat),
+        "p_value": float(p_value),
+        "critical_values": critical_values,
+        "is_cointegrated": bool(p_value < significance and y_I1["is_I1"] and x_I1["is_I1"]),
+        "y_is_I1": y_I1["is_I1"],
+        "x_is_I1": x_I1["is_I1"],
     }
-
 
 def screen_pairs(
     prices_df: pd.DataFrame,
@@ -92,7 +117,7 @@ def screen_pairs(
 ) -> pd.DataFrame:
     """
     Run Engle-Granger on all candidate pairs, testing both directions
-    (y~x and x~y) and keeping the result with the lower p-value.
+    (y~x and x~y) and keeping the result with the lower p-value. (todo: check raw pirce of day - raw price of day before)
 
     Parameters
     ----------
@@ -133,7 +158,9 @@ def screen_pairs(
                 "intercept": best["intercept"],
                 "adf_stat": best["adf_stat"],
                 "p_value": best["p_value"],
-                "is_cointegrated": best["is_cointegrated"],
+                "y_is_I1": best["y_is_I1"],
+                "x_is_I1": best["x_is_I1"],
+                "is_cointegrated": best["is_cointegrated"], # obtained from coint
             }
         )
 

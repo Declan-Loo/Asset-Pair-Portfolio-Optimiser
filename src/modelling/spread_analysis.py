@@ -20,7 +20,7 @@ def compute_spread(
     """
     Spread = y - hedge_ratio * x - intercept.
     """
-    spread = y - hedge_ratio * x - intercept
+    spread = y.astype(float) - hedge_ratio * x.astype(float) - intercept
     spread.name = "spread"
     return spread
 
