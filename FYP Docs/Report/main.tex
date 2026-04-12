@@ -18,6 +18,7 @@
 \usepackage{pdfpages}
 \usepackage{siunitx}
 \usepackage[a4paper, margin = 3cm, bottom = 2.5cm]{geometry}
+\usepackage{hyperref}
 
 \newtheorem{theorem}{THEOREM}
 \newtheorem{lemma}[theorem]{LEMMA}
@@ -74,6 +75,8 @@ Summarise your report concisely.
 
 
 \chapter{Introduction}
+
+This project uses only publicly available equity price data and does not involve human subjects, personal data, or data collection. No ethical approval was required for the project.
 
 \section{Motivation}
 Markowitz mean-variance optimisation \cite{markowitz1959} provides a rigorous framework for constructing efficient portfolios, yet its practical performance is highly sensitive to the accuracy of expected return estimates. Historical mean returns are extremely noisy estimators of future returns, with standard errors that often exceed the estimates themselves \cite{ledoit2004}, causing optimisers to produce unstable, concentrated allocations that perform poorly out-of-sample.
@@ -440,6 +443,16 @@ where $V_t$ is the cumulative portfolio value at time $t$.
 
 \paragraph{Benchmarks.} Three benchmarks are used for comparison: (i)~an equal-weight buy-and-hold portfolio of all universe constituents, (ii)~individual buy-and-hold of each pair leg, and (iii)~the S\&P~500 index as a broad market proxy.
 
+\subsection{Statistical Robustness Tests}
+
+Three additional tests are applied to the OOS results to assess statistical robustness:
+
+\paragraph{Bootstrap confidence intervals.} Given the short OOS window ($T \approx 501$ trading days), point Sharpe ratio estimates carry high sampling variance. Bootstrap confidence intervals are constructed by resampling daily returns with replacement 10{,}000 times, providing empirical 95\% CIs for each strategy's Sharpe ratio.
+
+\paragraph{Paired significance test.} A paired $t$-test and non-parametric Wilcoxon signed-rank test are applied to the daily return difference between OU Max-Sharpe and Historical Max-Sharpe. This directly tests whether the observed Sharpe advantage of the OU-Implied approach is statistically significant or within normal sampling variation.
+
+\paragraph{Sensitivity analysis.} The per-pair backtest is re-run across a grid of entry $z$-scores $\{1.5, 2.0, 2.5, 3.0\}$ and transaction costs $\{0, 5, 10, 20, 30\}$ bps, assessing whether conclusions are robust to parameter choice. A leave-one-pair-out (LOPO) test additionally re-optimises the portfolio after removing each pair, verifying that the full-portfolio result is not dominated by a single spread.
+
 \section{Summary}
 
 This chapter has presented the complete methodology for the project. The pipeline proceeds from data sourcing and cointegration screening, through spread modelling and OU-implied return estimation, to Markowitz portfolio optimisation and rigorous out-of-sample backtesting. The key methodological contribution is the use of OU-implied expected returns derived from cointegrated spreads as inputs to the mean-variance optimiser, compared against a traditional historical mean baseline. Chapter~\ref{chap:implementation} describes how this methodology is implemented in software.
@@ -520,7 +533,7 @@ The first notebook (\texttt{01\_spread\_exploration}) loads in-sample close pric
     \item Rolling $z$-score plots with entry/exit threshold annotations.
 \end{itemize}
 
-These are implemented in the \texttt{spread\_analysis} module, which provides functions \texttt{compute\_spread()}, \texttt{compute\_half\_life()}, \texttt{compute\_hurst\_exponent()}, and \texttt{compute\_rolling\_zscore()}. The half-life function fits the AR(1) regression (Equation~\ref{eq:ar1}) using ordinary least squares and returns the half-life in trading days. The Hurst exponent function computes the variogram across a configurable set of lags (default: 20) and estimates $H$ via log-log regression. The \texttt{spread\_summary()} function aggregates all diagnostics into a single DataFrame for tabular comparison across pairs.
+These are implemented in the \texttt{spread\_analysis} module, which provides functions \texttt{compute\_spread()}, \texttt{compute\_half\_life()}, \texttt{compute\_hurst\_exponent()}, and \texttt{compute\_zscore()}. The half-life function fits the AR(1) regression (Equation~\ref{eq:ar1}) using ordinary least squares and returns the half-life in trading days. The Hurst exponent function computes the variogram across lags up to \texttt{max\_lag} (default: 100) and estimates $H$ via log-log regression on $\log(\tau_\ell)$ against $\log(\ell)$. Diagnostics are aggregated in the notebook into a summary DataFrame for tabular comparison across pairs.
 
 \section{Cointegration Validation}
 
@@ -538,6 +551,8 @@ The \texttt{cointegration} module implements the screening procedure as follows:
 \subsection{Out-of-Sample Stability}
 
 To assess whether in-sample cointegration relationships persist, the notebook re-estimates the cointegrating regression on the OOS period and compares hedge ratios, ADF statistics, and spread dynamics. Rolling half-life plots spanning both periods provide visual confirmation of parameter stability. This validation step informs which pairs are included in the final portfolio.
+
+Two additional formal tests are also implemented. The \textbf{KPSS test} (\texttt{statsmodels.tsa.stattools.kpss}) complements ADF by reversing the null hypothesis: stationarity is accepted only when ADF rejects non-stationarity \emph{and} KPSS fails to reject stationarity. The \textbf{Chow test} formally tests whether the cointegrating regression coefficients $(\hat{\beta}, \hat{\alpha})$ are stable across the IS/OOS split by comparing the pooled residual sum of squares against the sum from separate IS and OOS regressions, yielding an $F$-statistic under $H_0$: no structural break.
 
 \section{Return Estimation}
 
@@ -560,12 +575,12 @@ The notebook produces a grouped bar chart comparing OU-implied, historical mean,
 The \texttt{optimiser} module implements the Markowitz mean-variance framework in spread space.
 
 \begin{itemize}
-    \item \texttt{minimum\_variance\_weights(cov, delta)} --- solves the minimum-variance problem (Equation~\ref{eq:min_var}) using Sequential Least Squares Programming (SLSQP) from \texttt{scipy.optimize}. The long-only constraint ($w_i \geq 0$) and full-investment constraint ($\sum w_i = 1$) are enforced explicitly. The optional $L_2$ regularisation term $\delta \|\mathbf{w}\|_2^2$ is added to the objective to improve stability.
-    \item \texttt{maximum\_sharpe\_weights(mu, cov, rf)} --- solves the maximum Sharpe ratio problem (Equation~\ref{eq:max_sharpe}) by minimising the negative Sharpe ratio subject to the same constraints.
-    \item \texttt{compute\_efficient\_frontier(mu, cov, rf, n\_points)} --- generates the efficient frontier by solving the minimum-variance problem for a range of target returns between the global minimum-variance return and the maximum achievable return.
+    \item \texttt{minimum\_variance\_weights(returns, cov\_matrix, l2\_reg)} --- solves the minimum-variance problem (Equation~\ref{eq:min_var}) using Sequential Least Squares Programming (SLSQP) from \texttt{scipy.optimize}. The long-only constraint ($w_i \geq 0$) and full-investment constraint ($\sum w_i = 1$) are enforced explicitly. The optional $L_2$ regularisation term \texttt{l2\_reg}$\cdot \|\mathbf{w}\|_2^2$ is added to the objective to improve numerical stability and reduce weight concentration.
+    \item \texttt{maximum\_sharpe\_weights(returns, expected\_returns, cov\_matrix, rf\_annual)} --- solves the maximum Sharpe ratio problem (Equation~\ref{eq:max_sharpe}) by minimising the negative Sharpe ratio subject to the same long-only and full-investment constraints. Custom expected returns (e.g.\ OU-implied) can be passed via \texttt{expected\_returns}; if omitted, the historical sample mean is used.
+    \item \texttt{compute\_efficient\_frontier(returns, expected\_returns, cov\_matrix, n\_points, rf\_annual)} --- generates the efficient frontier by solving the minimum-variance problem for a range of target returns, anchored between the global minimum-variance portfolio return and the maximum single-asset expected return.
 \end{itemize}
 
-Return and volatility figures are annualised from daily values: expected returns via $\mu_{\text{ann}} = \exp(252 \cdot \mu_{\text{daily}}) - 1$ and volatilities via $\sigma_{\text{ann}} = \sigma_{\text{daily}} \cdot \sqrt{252}$. The optimiser outputs portfolio weights for both the OU-implied and historical mean return vectors, enabling a direct comparison of allocation stability.
+Return and volatility figures are annualised from daily values. Log-return expected returns are converted to annualised arithmetic returns via $\mu_{\text{ann}} = \mathrm{expm1}(252 \cdot \mu_{\text{daily}})$, i.e.\ $\exp(252\,\mu_{\text{daily}}) - 1$, which correctly compounds the daily log return. Volatilities are scaled as $\sigma_{\text{ann}} = \sigma_{\text{daily}} \cdot \sqrt{252}$. The optimiser accepts either OU-implied or historical expected returns, enabling direct comparison of the resulting allocations.
 
 \section{Backtesting Engine}
 
@@ -591,6 +606,14 @@ The PnL computation deploys the full initial capital into each active position. 
 \subsection{Metrics and Benchmarks}
 
 The \texttt{metrics} module provides three core functions: \texttt{compute\_ex\_post\_sharpe\_ratio()}, \texttt{compute\_max\_drawdown()}, and \texttt{compute\_volatility\_reduction()}, each implemented as described in Section~\ref{sec:backtesting}. The \texttt{benchmarks} module constructs comparison return series: a constant risk-free rate, equal-weight buy-and-hold of all universe constituents, per-pair buy-and-hold of both legs, and the S\&P~500 index. A \texttt{historical\_mpt\_returns()} function computes the out-of-sample returns of a traditional max-Sharpe portfolio estimated on in-sample asset returns, serving as the primary baseline for comparison.
+
+Three statistical tests are implemented in the fourth notebook to strengthen the empirical evaluation:
+\begin{itemize}
+    \item \textbf{Bootstrap confidence intervals} (10{,}000 resamples) on the annualised Sharpe ratio for each strategy, quantifying sampling uncertainty over the short OOS window.
+    \item \textbf{Paired $t$-test and Wilcoxon signed-rank test} comparing OU Max-Sharpe against Historical Max-Sharpe daily returns, directly testing whether the observed Sharpe difference is statistically significant.
+    \item \textbf{Sensitivity analysis}: a grid sweep over entry $z$-score thresholds $\{1.5, 2.0, 2.5, 3.0\}$ and transaction costs $\{0, 5, 10, 20, 30\}$ bps, assessing the robustness of per-pair backtest results to parameter choice.
+    \item \textbf{Leave-one-pair-out (LOPO) robustness}: each pair is removed in turn, the OU Max-Sharpe portfolio is re-optimised on the remaining spreads, and OOS Sharpe is recomputed, testing whether the portfolio result is driven by a single spread.
+\end{itemize}
 
 \section{Dashboard Interface}
 
@@ -641,7 +664,7 @@ TSM.N   & NVDA.O  &  0.476 &  3.071 & $-$1.340 & 0.817 & Yes & Yes & No \\
 BAC.N   & JPM.N   &  0.854 & $-$0.666 & $-$1.230 & 0.850 & Yes & Yes & No \\
 TGT.N   & COST.O  &  0.856 & $-$0.125 & $-$0.869 & 0.925 & Yes & Yes & No \\
 \bottomrule
-\multicolumn{9}{l}{\small Augmented Engle-Granger test with MacKinnon (2010) critical values at 5\% significance ($p<0.05$). Log prices used throughout.} \\
+\multicolumn{9}{l}{\small Augmented Engle-Granger test; $p$-values and critical values via MacKinnon (1994, 2010) regression surface approximation, at 5\% significance ($p<0.05$). Log prices used throughout.} \\
 \multicolumn{9}{l}{\small $I(1)$ verified by ADF on levels (non-stationary) and first differences (stationary). Sorted by $p$-value.} \\
 \multicolumn{9}{l}{\small Source: Author's calculations on \texttt{01\_spread\_exploration.ipynb}.}
 \end{tabular}%
@@ -876,6 +899,61 @@ TGT.N/COST.O & 0.925          & 0.162          &  0.856 & $-$0.318 & 1.174 & No 
 \end{tabular}%
 }
 \end{table}
+\subsection{KPSS Complement and Chow Structural Break Tests}
+
+Table~\ref{tab:kpss_results} applies the KPSS test alongside ADF on both IS and OOS spreads.
+The KPSS null hypothesis is stationarity (the reverse of ADF), so mean reversion is only
+confirmed when ADF rejects non-stationarity \emph{and} KPSS fails to reject stationarity.
+
+\begin{table}[htbp]
+\centering
+\caption{ADF and KPSS stationarity tests on IS and OOS spreads (using IS hedge ratios).
+Mean-reversion (MR) consensus requires ADF $p < 0.05$ and KPSS $p > 0.05$ simultaneously.}
+\label{tab:kpss_results}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{3}{c}{In-Sample (2019--2023)} & \multicolumn{3}{c}{Out-of-Sample (2024--2025)} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+Pair & ADF $p$ & KPSS $p$ & MR Consensus & ADF $p$ & KPSS $p$ & MR Consensus \\
+\midrule
+GS.N/MS.N   & 0.005 & 0.019 & No  & 0.452 & 0.010 & No \\
+KO.N/PEP.O  & 0.009 & 0.100 & Yes & 0.622 & 0.010 & No \\
+DAL.N/UAL.O & 0.009 & 0.080 & Yes & 0.584 & 0.010 & No \\
+\bottomrule
+\multicolumn{7}{l}{\small KPSS $p$-value of 0.010 denotes the tabulated lower bound (i.e.\ $p \leq 0.010$); null of stationarity is strongly rejected.} \\
+\multicolumn{7}{l}{\small IS consensus: KO/PEP and DAL/UAL achieve consensus; GS/MS fails KPSS despite low ADF $p$, indicating non-stationarity is borderline.} \\
+\multicolumn{7}{l}{\small OOS: All three pairs lose the MR consensus, consistent with Table~\ref{tab:cointegration_validation}.} \\
+\multicolumn{7}{l}{\small Source: Author's calculations on \texttt{02\_cointegration\_validation.ipynb}.}
+\end{tabular}%
+}
+\end{table}
+
+Table~\ref{tab:chow_results} presents the Chow test for structural break in the cointegrating
+regression across the IS/OOS split. The null hypothesis is that the regression coefficients
+$(\hat{\beta}, \hat{\alpha})$ are identical in both periods.
+
+\begin{table}[htbp]
+\centering
+\caption{Chow test for structural break in the cointegrating regression $y = \alpha + \beta x$
+across the IS/OOS split (IS: 2019--2023; OOS: 2024--2025).
+H$_0$: no structural break (regression coefficients are equal in both periods).}
+\label{tab:chow_results}
+\begin{tabular}{lrrcl}
+\toprule
+Pair & $F$-statistic & $p$-value & df & Conclusion \\
+\midrule
+GS.N/MS.N   & 2406.3 & $<0.001$ & (2, 2007) & Structural break detected \\
+KO.N/PEP.O  & 3078.4 & $<0.001$ & (2, 2007) & Structural break detected \\
+DAL.N/UAL.O &  269.5 & $<0.001$ & (2, 2007) & Structural break detected \\
+\bottomrule
+\multicolumn{5}{l}{\small The $F$-statistic compares the residual sum of squares of separate IS and OOS regressions} \\
+\multicolumn{5}{l}{\small against the pooled regression. All three pairs strongly reject the null at any conventional} \\
+\multicolumn{5}{l}{\small significance level, confirming that the cointegrating relationship is not stable over time.} \\
+\multicolumn{5}{l}{\small Source: Author's calculations on \texttt{02\_cointegration\_validation.ipynb}.}
+\end{tabular}
+\end{table}
+
 \FloatBarrier
 
 \section{Return Estimation}
@@ -998,6 +1076,154 @@ weights; the Historical MPT portfolio operates in asset space (GS.N, KO.N, MS.N,
     \end{tabular}%
     }
 \end{table}
+
+\subsection{Statistical Tests}
+
+\subsubsection{Bootstrap Confidence Intervals for Sharpe Ratio}
+
+With only 501 OOS trading days, Sharpe ratio estimates carry substantial sampling uncertainty.
+Table~\ref{tab:bootstrap_sharpe} reports 95\% confidence intervals derived from 10{,}000
+bootstrap resamples (with replacement) of the daily return series.
+
+\begin{table}[htbp]
+\centering
+\caption{Bootstrap 95\% confidence intervals for annualised Sharpe ratio (10{,}000 resamples,
+OOS period: January 2024 -- December 2025). ``Sig.\ $> 0$'' indicates whether the lower bound
+of the CI exceeds zero.}
+\label{tab:bootstrap_sharpe}
+\begin{tabular}{lrrrr}
+\toprule
+Strategy & Sharpe & 95\% CI Lower & 95\% CI Upper & Sig.\ $> 0$ \\
+\midrule
+OU Min-Var          & 0.720 & $-$0.721 & $+$2.138 & No \\
+OU Max-Sharpe       & 0.963 & $-$0.476 & $+$2.352 & No \\
+Hist Min-Var        & 0.711 & $-$0.677 & $+$2.100 & No \\
+Hist Max-Sharpe     & 0.868 & $-$0.477 & $+$2.258 & No \\
+Equal-Weight        & 0.625 & $-$0.792 & $+$2.051 & No \\
+S\&P 500 (SPY)      & 1.110 & $-$0.227 & $+$2.506 & No \\
+\bottomrule
+\multicolumn{5}{l}{\small No strategy achieves a CI lower bound strictly above zero, reflecting the} \\
+\multicolumn{5}{l}{\small high variance of Sharpe estimates over a 2-year OOS window ($T \approx 501$).} \\
+\multicolumn{5}{l}{\small Source: Author's calculations on \texttt{04\_backtest\_results.ipynb}.}
+\end{tabular}
+\end{table}
+
+\subsubsection{Paired Test: OU-Implied vs Historical MPT}
+
+To test whether the Sharpe advantage of OU-Implied Max-Sharpe over Historical Max-Sharpe
+is statistically meaningful, a paired $t$-test and a Wilcoxon signed-rank test are applied
+to the aligned daily return series. The null hypothesis is $H_0$: mean daily return
+of OU Max-Sharpe equals that of Hist Max-Sharpe.
+
+\begin{table}[htbp]
+\centering
+\caption{Hypothesis test results: OU Max-Sharpe vs Hist Max-Sharpe daily returns
+(OOS, $N = 501$ trading days). Two-sided tests.}
+\label{tab:paired_test}
+\begin{tabular}{lrrl}
+\toprule
+Test & Statistic & $p$-value & Decision \\
+\midrule
+Paired $t$-test         & $t = -0.138$ & 0.890 & Fail to reject $H_0$ \\
+Wilcoxon signed-rank    & $W = 62557$ & 0.922 & Fail to reject $H_0$ \\
+\bottomrule
+\multicolumn{4}{l}{\small Mean daily difference (OU $-$ Hist): $-0.000085$ ($-2.15\%$ annualised).} \\
+\multicolumn{4}{l}{\small Both tests fail to reject $H_0$ at 5\%, confirming that the observed Sharpe} \\
+\multicolumn{4}{l}{\small difference (0.963 vs 0.868) is not statistically significant over this OOS window.} \\
+\multicolumn{4}{l}{\small Source: Author's calculations on \texttt{04\_backtest\_results.ipynb}.}
+\end{tabular}
+\end{table}
+
+\subsubsection{Sensitivity to Z-Score Thresholds and Transaction Costs}
+
+Table~\ref{tab:sensitivity} presents Sharpe ratios from the per-pair $z$-score backtest
+across entry thresholds $z_{\text{entry}} \in \{1.5, 2.0, 2.5, 3.0\}$ and transaction
+costs in $\{0, 5, 10, 20, 30\}$ bps. Rows are entry $z$-scores; columns are transaction costs in bps.
+
+\begin{table}[htbp]
+\centering
+\caption{Sensitivity of per-pair Sharpe ratio to entry $z$-score threshold and transaction
+costs (bps). OOS period: January 2024 -- December 2025. Stop-loss fixed at $z_{\text{entry}} + 2.0$.}
+\label{tab:sensitivity}
+
+\medskip
+\textbf{(a) GS.N/MS.N}
+
+\smallskip
+\begin{tabular}{lrrrrr}
+\toprule
+Entry $z$ & 0 bps & 5 bps & 10 bps & 20 bps & 30 bps \\
+\midrule
+1.5 & $-$0.535 & $-$0.566 & $-$0.598 & $-$0.661 & $-$0.724 \\
+2.0 & $-$0.235 & $-$0.260 & $-$0.285 & $-$0.334 & $-$0.384 \\
+2.5 & $+$0.622 & $+$0.599 & $+$0.577 & $+$0.531 & $+$0.485 \\
+3.0 & $+$0.413 & $+$0.390 & $+$0.368 & $+$0.322 & $+$0.275 \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\textbf{(b) KO.N/PEP.O}
+
+\smallskip
+\begin{tabular}{lrrrrr}
+\toprule
+Entry $z$ & 0 bps & 5 bps & 10 bps & 20 bps & 30 bps \\
+\midrule
+1.5 & $-$0.780 & $-$0.849 & $-$0.917 & $-$1.052 & $-$1.185 \\
+2.0 & $-$0.555 & $-$0.610 & $-$0.664 & $-$0.774 & $-$0.882 \\
+2.5 & $-$0.655 & $-$0.700 & $-$0.746 & $-$0.837 & $-$0.928 \\
+3.0 & $-$0.535 & $-$0.562 & $-$0.589 & $-$0.642 & $-$0.694 \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\textbf{(c) DAL.N/UAL.O}
+
+\smallskip
+\begin{tabular}{lrrrrr}
+\toprule
+Entry $z$ & 0 bps & 5 bps & 10 bps & 20 bps & 30 bps \\
+\midrule
+1.5 & $+$0.248 & $+$0.167 & $+$0.084 & $-$0.081 & $-$0.248 \\
+2.0 & $-$0.185 & $-$0.235 & $-$0.286 & $-$0.388 & $-$0.490 \\
+2.5 & $-$0.339 & $-$0.367 & $-$0.396 & $-$0.453 & $-$0.510 \\
+3.0 & $-$1.146 & $-$1.165 & $-$1.185 & $-$1.223 & $-$1.260 \\
+\bottomrule
+\multicolumn{6}{l}{\small GS/MS shows positive Sharpe at $z = 2.5$ and $3.0$ even with 30 bps costs, suggesting} \\
+\multicolumn{6}{l}{\small the signal survives at higher entry thresholds. KO/PEP is negative across all configurations,} \\
+\multicolumn{6}{l}{\small consistent with structural breakdown. DAL/UAL is borderline at $z = 1.5$ with low costs.} \\
+\multicolumn{6}{l}{\small Source: Author's calculations on \texttt{04\_backtest\_results.ipynb}.}
+\end{tabular}
+\end{table}
+
+\subsubsection{Leave-One-Pair-Out Portfolio Robustness}
+
+Table~\ref{tab:lopo} tests whether the OU Max-Sharpe portfolio result is driven by a
+single spread. In each iteration one pair is removed, the portfolio is re-optimised
+on the remaining spreads, and OOS performance is recomputed.
+
+\begin{table}[htbp]
+\centering
+\caption{Leave-one-pair-out (LOPO) robustness check for the OU Max-Sharpe portfolio.
+Full-portfolio Sharpe ratio: 0.963.}
+\label{tab:lopo}
+\begin{tabular}{lrrrr}
+\toprule
+Dropped Pair & Sharpe & Total Return & Max Drawdown & Ann.\ Vol \\
+\midrule
+GS.N/MS.N   & 0.903 & $+$29.5\% & $-$15.8\% & 13.1\% \\
+KO.N/PEP.O  & 0.963 & $+$34.8\% & $-$11.5\% & 14.6\% \\
+DAL.N/UAL.O & 0.963 & $+$34.8\% & $-$11.5\% & 14.6\% \\
+\bottomrule
+\multicolumn{5}{l}{\small Dropping KO/PEP or DAL/UAL leaves the portfolio unchanged, indicating} \\
+\multicolumn{5}{l}{\small the optimiser assigns all weight to GS/MS under OU Max-Sharpe. Dropping} \\
+\multicolumn{5}{l}{\small GS/MS reduces Sharpe from 0.963 to 0.903, confirming GS/MS is the} \\
+\multicolumn{5}{l}{\small dominant pair but the result is not entirely driven by it.} \\
+\multicolumn{5}{l}{\small Source: Author's calculations on \texttt{04\_backtest\_results.ipynb}.}
+\end{tabular}
+\end{table}
+
+\FloatBarrier
 
 \begin{figure}[htbp]
     \centering
@@ -1161,7 +1387,7 @@ The project could have added more candidate pairs, and have tested with other fo
 
 \chapter{Software Implementation}
 
-The repository is found here \url{https://github.com/Declan-Loo/Asset-Pair-Portfolio-Optimiser}
+The full source code is available at \href{https://github.com/Declan-Loo/Asset-Pair-Portfolio-Optimiser}{https://github.com/Declan-Loo/Asset-Pair-Portfolio-Optimiser}.
 
 \section{Repository Structure}
 
@@ -1209,16 +1435,11 @@ The implementation requires Python 3.10+ with the following key libraries
 A full list of dependencies is provided in \texttt{requirements.txt}.
 
 \section{Reproducing Results}
-LSEG data access requires a valid \texttt{lseg-data.config.json} session configuration file placed in the project root. This file contains API credentials and is excluded from version control. Without it, the \texttt{refinitiv\_client.py} wrapper will fall back to any locally cached CSVs in \texttt{data/raw/}. To reproduce all results, execute the notebooks in order:
-\begin{enumerate}
-    \item \texttt{01\_spread\_exploration.ipynb}
-    \item \texttt{02\_cointegration\_validation.ipynb}
-    \item \texttt{03\_return\_estimation.ipynb}
-    \item \texttt{04\_backtest\_results.ipynb}
-\end{enumerate}
-All figures are exported automatically to \texttt{figures/} as PDF.
+Complete step-by-step instructions for installation, LSEG data configuration, and running the analysis notebooks and dashboard are provided in Appendix~\ref{appendix:system-manual} (System Manual).
+All figures are exported automatically to \texttt{src/analysis\_notebooks/figures/} as PDF upon notebook execution.
 
-\section{System Manual}
+\section{System Manual}%
+\label{appendix:system-manual}
 
 \subsection{Prerequisites}
 
@@ -1305,8 +1526,7 @@ To add a new candidate pair, edit \texttt{modelling/config.py} and append the tw
 
 \section{Code Listings}
 
-The listings below present the core algorithmic components of the implementation.  Boilerplate imports, docstrings, and dashboard visualisation code are omitted for brevity; the full source is available in the project repository.
-
+The following listings present the core algorithmic components, implemented in Python. Boilerplate and visualisation code are omitted; the full source is available in the project repository.
 % ------------------------------------------------------------------
 \subsection{Cointegration Screening (\texttt{cointegration.py})}
 % ------------------------------------------------------------------
@@ -1694,6 +1914,471 @@ class PairsBacktestEngine:
             "net_pnl":          net_pnl,
             "strategy_return":  net_pnl / cfg.initial_capital,
         }, index=y_prices.index)
+\end{Verbatim}
+
+% ------------------------------------------------------------------
+\subsection{Efficient Frontier \& Spread-vs-Asset Comparison (\texttt{optimiser.py}, \texttt{return\_estimation.py})}
+% ------------------------------------------------------------------
+
+\begin{Verbatim}[fontsize=\footnotesize, baselinestretch=0.85]
+def compute_efficient_frontier(
+    returns: pd.DataFrame,
+    expected_returns: pd.Series | np.ndarray | None = None,
+    cov_matrix: pd.DataFrame | np.ndarray | None = None,
+    n_points: int = 50,
+    rf_annual: float = 0.02,
+    periods_per_year: int = 252,
+    l2_reg: float = 0.0,
+) -> pd.DataFrame:
+    """
+    For a range of target returns (anchored at the min-variance return
+    and the single-asset maximum), find the minimum-volatility portfolio
+    at each target via SLSQP with a return-equality constraint.
+    Returns a DataFrame of (return, volatility, sharpe) for plotting.
+    """
+    n = returns.shape[1]
+    mean_ret, cov = _resolve_inputs(returns, expected_returns, cov_matrix)
+
+    w_min = minimum_variance_weights(returns, cov_matrix, l2_reg=l2_reg)
+    ret_min, _ = _portfolio_stats(w_min, mean_ret, cov, periods_per_year)
+    ret_max = float(np.max(mean_ret)) * periods_per_year
+    if ret_max < ret_min:          # guard: all expected returns negative
+        ret_min, ret_max = ret_max, ret_min
+
+    def _min_var_obj(w):
+        return np.dot(w, np.dot(cov, w)) + l2_reg * np.dot(w, w)
+
+    records = []
+    for target in np.linspace(ret_min, ret_max, n_points):
+        constraints = [
+            {"type": "eq", "fun": lambda w: np.sum(w) - 1},
+            {"type": "eq",
+             "fun": lambda w, t=target:
+                 np.dot(w, mean_ret) * periods_per_year - t},
+        ]
+        result = minimize(
+            _min_var_obj, np.ones(n) / n, method="SLSQP",
+            bounds=[(0.0, 1.0)] * n, constraints=constraints,
+            options={"ftol": 1e-12, "maxiter": 1000},
+        )
+        if result.success:
+            port_ret, port_vol = _portfolio_stats(
+                result.x, mean_ret, cov, periods_per_year
+            )
+            sharpe = (port_ret - rf_annual) / port_vol if port_vol > 0 \
+                     else np.nan
+            records.append(
+                {"return": port_ret, "volatility": port_vol, "sharpe": sharpe}
+            )
+    return pd.DataFrame(records)
+
+
+def spread_vs_asset_estimates(
+    prices_df: pd.DataFrame,
+    coint_pairs: pd.DataFrame,
+    method: str = "historical",
+    window: int | None = None,
+    span: int = 60,
+    annualise: bool = True,
+    periods_per_year: int = 252,
+    cov_estimator: str = "sample",
+) -> dict:
+    """
+    Side-by-side expected-return and covariance estimates for spread-based
+    and traditional (asset-level) Markowitz formulations.
+
+    Asset returns are computed as log-returns for consistency with
+    compute_spread_returns() (which is a log-return differential).
+    Both sides use the same estimator choice (historical, EWMA, or OU;
+    sample, Ledoit-Wolf, or OAS).
+    """
+    spread_rets = build_spread_return_matrix(prices_df, coint_pairs)
+    tickers = list(dict.fromkeys(
+        coint_pairs["y"].tolist() + coint_pairs["x"].tolist()
+    ))
+    asset_rets = np.log(prices_df[tickers]).diff().dropna(how="all")
+
+    if method == "ewma":
+        spread_mu = ewma_mean_return(spread_rets.dropna(), span=span,
+            annualise=annualise, periods_per_year=periods_per_year)
+        asset_mu  = ewma_mean_return(asset_rets.dropna(),  span=span,
+            annualise=annualise, periods_per_year=periods_per_year)
+    elif method == "ou":
+        spread_mu = build_ou_implied_returns(prices_df, coint_pairs,
+            window=window or 60, annualise=annualise,
+            periods_per_year=periods_per_year)
+        asset_mu  = historical_mean_return(asset_rets.dropna(),
+            window=window, annualise=annualise,
+            periods_per_year=periods_per_year)
+    else:  # "historical"
+        spread_mu = historical_mean_return(spread_rets.dropna(),
+            window=window, annualise=annualise,
+            periods_per_year=periods_per_year)
+        asset_mu  = historical_mean_return(asset_rets.dropna(),
+            window=window, annualise=annualise,
+            periods_per_year=periods_per_year)
+
+    cov_fn = (
+        (lambda r: shrinkage_covariance(r, annualise=annualise,
+             periods_per_year=periods_per_year, estimator=cov_estimator))
+        if cov_estimator in ("lw", "oas")
+        else (lambda r: sample_covariance(r, annualise=annualise,
+              periods_per_year=periods_per_year))
+    )
+    return {
+        "spread_returns": spread_rets,
+        "spread_mu":      spread_mu,
+        "spread_cov":     cov_fn(spread_rets.dropna()),
+        "asset_returns":  asset_rets,
+        "asset_mu":       asset_mu,
+        "asset_cov":      cov_fn(asset_rets.dropna()),
+    }
+\end{Verbatim}
+
+% ------------------------------------------------------------------
+\subsection{Performance Metrics (\texttt{metrics.py})}
+% ------------------------------------------------------------------
+
+\begin{Verbatim}[fontsize=\footnotesize, baselinestretch=0.85]
+def compute_ex_post_sharpe_ratio(
+    returns: pd.Series,
+    rf_annual: float = 0.02,
+    periods_per_year: int = 252,
+) -> float:
+    """
+    Sharpe (1994) ex-post Sharpe ratio on realised returns.
+    Daily excess returns are computed by subtracting the daily risk-free
+    rate; the ratio is annualised by sqrt(periods_per_year).
+    """
+    if len(returns) < 2:
+        raise ValueError("Need at least 2 returns for std dev")
+    excess   = returns - (rf_annual / periods_per_year)
+    mean_exc = excess.mean()
+    std_exc  = excess.std(ddof=1)
+    if std_exc == 0:
+        return np.nan
+    return (mean_exc / std_exc) * np.sqrt(periods_per_year)
+
+
+def compute_max_drawdown(returns: pd.Series) -> float:
+    """
+    Maximum drawdown: the largest peak-to-trough decline in the
+    compounded equity curve.  Returns a negative fraction.
+    """
+    if len(returns) < 2:
+        raise ValueError("Need at least 2 returns to compute drawdown")
+    cum         = (1 + returns).cumprod()
+    running_max = cum.cummax()
+    drawdowns   = (cum - running_max) / running_max
+    return float(drawdowns.min())
+
+
+def compute_volatility_reduction(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    periods_per_year: int = 252,
+) -> float:
+    """
+    Fractional annualised volatility reduction vs a benchmark.
+        vol_reduction = 1 - sigma_portfolio / sigma_benchmark
+    Positive => portfolio is less volatile; negative => more volatile.
+    """
+    sigma_p = portfolio_returns.std(ddof=1) * np.sqrt(periods_per_year)
+    sigma_b = benchmark_returns.std(ddof=1) * np.sqrt(periods_per_year)
+    if sigma_b == 0:
+        raise ValueError("Benchmark volatility is zero")
+    return float(1 - (sigma_p / sigma_b))
+\end{Verbatim}
+
+% ------------------------------------------------------------------
+\subsection{Benchmark Suite (\texttt{benchmarks.py})}
+% ------------------------------------------------------------------
+
+\begin{Verbatim}[fontsize=\footnotesize, baselinestretch=0.85]
+def compute_benchmark_metrics(
+    returns: pd.Series,
+    rf_annual: float = 0.02,
+    periods_per_year: int = 252,
+    benchmark_returns: pd.Series | None = None,
+) -> dict:
+    """
+    Compute standard metrics for any return series.  If benchmark_returns
+    is provided, also computes volatility_reduction aligned to the common
+    trading calendar (inner join on the index).
+    """
+    ret = returns.dropna()
+    out = {
+        "sharpe_ratio":          compute_ex_post_sharpe_ratio(
+                                     ret, rf_annual, periods_per_year),
+        "max_drawdown":          compute_max_drawdown(ret),
+        "total_return":          float((1 + ret).prod() - 1),
+        "annualised_volatility": float(ret.std(ddof=1)
+                                       * np.sqrt(periods_per_year)),
+        "volatility_reduction":  np.nan,
+    }
+    if benchmark_returns is not None:
+        common = ret.index.intersection(benchmark_returns.dropna().index)
+        if len(common) >= 2:
+            try:
+                out["volatility_reduction"] = compute_volatility_reduction(
+                    ret.reindex(common).dropna(),
+                    benchmark_returns.reindex(common).dropna(),
+                    periods_per_year,
+                )
+            except Exception:
+                pass
+    return out
+
+
+def historical_mpt_returns(
+    train_prices: pd.DataFrame,
+    test_prices: pd.DataFrame,
+    rf_annual: float = 0.02,
+    periods_per_year: int = 252,
+) -> pd.Series:
+    """
+    Out-of-sample returns of the historical max-Sharpe (traditional MPT)
+    portfolio.  Weights are estimated on train_prices using the sample mean
+    and covariance of asset returns; fixed weights are then applied to
+    test_prices.  Provides the classical Markowitz benchmark for comparison
+    with the spread-based strategy.
+    """
+    train_ret = train_prices.pct_change().dropna()
+    mean_ret  = train_ret.mean().values
+    cov       = train_ret.cov().values
+    n         = len(mean_ret)
+
+    def neg_sharpe(w):
+        port_ret = np.dot(w, mean_ret) * periods_per_year
+        port_vol = np.sqrt(np.dot(w, np.dot(cov, w)) * periods_per_year)
+        return -(port_ret - rf_annual) / port_vol if port_vol > 0 else 1e6
+
+    res = minimize(
+        neg_sharpe, np.ones(n) / n, method="SLSQP",
+        bounds=[(0.0, 1.0)] * n,
+        constraints={"type": "eq", "fun": lambda w: np.sum(w) - 1},
+    )
+    port_ret = (test_prices[train_prices.columns].pct_change() * res.x
+                ).sum(axis=1)
+    port_ret.name = "historical_mpt"
+    return port_ret.dropna()
+\end{Verbatim}
+
+% ------------------------------------------------------------------
+\subsection{Trade Logging \& Aggregate Metrics (\texttt{engine.py})}
+% ------------------------------------------------------------------
+
+\begin{Verbatim}[fontsize=\footnotesize, baselinestretch=0.85]
+def _build_trade_log(
+    self,
+    positions: pd.Series,
+    zscore: pd.Series,
+) -> pd.DataFrame:
+    """
+    Build an event-level trade log from position transitions.
+    Each row records the date, direction (entry_long, entry_short, exit),
+    the resulting position, and the z-score at that moment.
+    """
+    changes    = positions.diff().fillna(0.0)
+    records    = []
+    for date, change in changes[changes != 0.0].items():
+        pos_after = positions.loc[date]
+        if   pos_after == 0.0:  direction = "exit"
+        elif change     > 0:    direction = "entry_long"
+        else:                   direction = "entry_short"
+        records.append({
+            "date":           date,
+            "direction":      direction,
+            "position_after": pos_after,
+            "zscore":         zscore.loc[date]
+                              if date in zscore.index else np.nan,
+        })
+    return pd.DataFrame(records)
+
+
+def _compute_metrics(
+    self,
+    daily_returns: pd.Series,
+    trades: pd.DataFrame,
+    benchmark_returns: pd.Series | None = None,
+) -> dict:
+    """
+    Aggregate performance metrics over the backtest period.
+
+    Win rate is approximated from daily active returns (non-zero position
+    days) to avoid double-counting partial holding periods.
+    Profit factor = gross profits / gross losses on active days.
+    Volatility reduction is measured relative to the equal-weight
+    buy-and-hold of the two spread legs.
+    """
+    valid  = daily_returns.dropna()
+    active = valid[valid != 0.0]
+    wins   = (active > 0).sum()
+    losses = (active < 0).sum()
+    win_rate = float(wins / (wins + losses)) if (wins + losses) > 0 \
+               else np.nan
+    profit_factor = (
+        float(active[active > 0].sum() / abs(active[active < 0].sum()))
+        if (active < 0).any() else np.inf
+    )
+    vol_red = np.nan
+    if benchmark_returns is not None:
+        common = valid.index.intersection(benchmark_returns.dropna().index)
+        if len(common) >= 2:
+            try:
+                vol_red = compute_volatility_reduction(
+                    valid.reindex(common), benchmark_returns.reindex(common)
+                )
+            except (ValueError, ZeroDivisionError):
+                pass
+    return {
+        "sharpe_ratio":          compute_ex_post_sharpe_ratio(valid),
+        "max_drawdown":          compute_max_drawdown(valid),
+        "total_return":          float((1 + valid).prod() - 1),
+        "num_trades":            len(trades[trades["direction"]
+                                             .str.startswith("entry")]),
+        "num_round_trips":       len(trades[trades["direction"] == "exit"]),
+        "win_rate":              win_rate,
+        "profit_factor":         profit_factor,
+        "annualised_volatility": float(valid.std(ddof=1) * np.sqrt(252)),
+        "volatility_reduction":  vol_red,
+    }
+\end{Verbatim}
+
+% ------------------------------------------------------------------
+\subsection{Data Client with Incremental Cache (\texttt{refinitiv\_client.py})}
+% ------------------------------------------------------------------
+
+\begin{Verbatim}[fontsize=\footnotesize, baselinestretch=0.85]
+# Cache key: MD5 hash of (sorted tickers, interval, sorted fields).
+# A single CSV file grows incrementally as new date ranges are requested.
+
+def _cache_path(tickers: list, interval: str, fields: list) -> Path:
+    key    = {"tickers": sorted(tickers), "interval": interval,
+               "fields": sorted(fields)}
+    digest = hashlib.md5(
+        json.dumps(key, sort_keys=True).encode()
+    ).hexdigest()[:10]
+    fname  = (
+        "_".join(sorted(tickers)).replace(".", "-")[:40]
+        + f"__{interval}__{digest}.csv"
+    )
+    return RAW_DATA_DIR / fname
+
+
+def get_price_timeseries(
+    tickers, start=None, end=None, interval="1d",
+    fields=None, use_cache=True,
+):
+    """
+    Fetch OHLCV data from LSEG with smart incremental caching.
+
+    On a full cache hit the function returns immediately.  On a partial
+    cache hit (the requested window extends beyond the cached range in
+    either direction), only the missing segment(s) are fetched, merged,
+    and re-persisted.  This minimises LSEG API calls when re-running
+    notebooks with slightly different date windows.
+    """
+    # ... date / ticker / interval normalisation omitted for brevity ...
+
+    path = _cache_path(instruments, interval, fields)
+
+    if use_cache and path.exists():
+        cached_df    = _load_cache(path)
+        need_before  = start_dt < cached_df.index.min()
+        need_after   = end_dt   > cached_df.index.max()
+
+        if not need_before and not need_after:
+            return cached_df.loc[start_dt:end_dt]      # full hit
+
+        fetched_parts = []
+        if need_before:
+            gap_end = pd.Timestamp(np.busday_offset(
+                (cached_df.index.min() - timedelta(days=1)).date(),
+                0, roll="preceding"
+            ))
+            if start_dt <= gap_end:
+                fetched_parts.append(
+                    _fetch_from_lseg(instruments, fields, interval,
+                                     start_dt, gap_end)
+                )
+        if need_after:
+            gap_start = cached_df.index.max() + timedelta(days=1)
+            if gap_start <= end_dt:
+                fetched_parts.append(
+                    _fetch_from_lseg(instruments, fields, interval,
+                                     gap_start, end_dt)
+                )
+        if fetched_parts:
+            combined = pd.concat([cached_df] + fetched_parts)
+            combined = combined[~combined.index.duplicated(keep="last")]
+            combined.sort_index(inplace=True)
+            _save_cache(combined, path)
+            return combined.loc[start_dt:end_dt]
+
+        return cached_df.loc[start_dt:end_dt]
+
+    df = _fetch_from_lseg(instruments, fields, interval, start_dt, end_dt)
+    if use_cache:
+        _save_cache(df, path)
+    return df
+
+
+def _clean_frame(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Post-fetch cleaning: datetime index, numeric coercion,
+    forward-fill up to 5 business days, and drop columns >10% missing.
+    """
+    df.index = pd.to_datetime(df.index)
+    df.index.name = "Date"
+    df.dropna(how="all", inplace=True)
+    df.sort_index(inplace=True)
+    for col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    df = df.ffill(limit=5)
+    bad_cols = df.columns[df.isna().mean() > 0.10].tolist()
+    if bad_cols:
+        warnings.warn(f"Dropping columns with >10% missing: {bad_cols}")
+        df.drop(columns=bad_cols, inplace=True)
+    return df
+\end{Verbatim}
+
+% ------------------------------------------------------------------
+\subsection{Universe Configuration (\texttt{modelling/config.py})}
+% ------------------------------------------------------------------
+
+\begin{Verbatim}[fontsize=\footnotesize, baselinestretch=0.85]
+# 26 large-cap US equities across 7 sectors, identified by LSEG RIC codes.
+TICKERS = [
+    "NVDA.O", "AMD.O",  "TSM.N",  "INTC.O",   # Semiconductors
+    "KO.N",   "PEP.O",  "COST.O", "TGT.N",    # Consumer Staples
+    "JPM.N",  "BAC.N",  "GS.N",   "MS.N",     # Financials
+    "XOM.N",  "CVX.N",  "SLB.N",  "HAL.N",    # Energy
+    "DAL.N",  "UAL.O",                         # Airlines
+    "AMZN.O", "MSFT.O", "META.O", "GOOGL.O",  # Technology / Cloud
+    "JNJ.N",  "PFE.N",  "MRK.N",  "ABBV.N",   # Healthcare
+]
+
+# 16 sector-homogeneous candidate pairs for cointegration screening.
+CANDIDATE_PAIRS = [
+    ("NVDA.O", "AMD.O"),  ("NVDA.O", "TSM.N"),
+    ("AMD.O",  "INTC.O"), ("TSM.N",  "INTC.O"),
+    ("KO.N",   "PEP.O"),  ("COST.O", "TGT.N"),
+    ("JPM.N",  "BAC.N"),  ("GS.N",   "MS.N"),
+    ("XOM.N",  "CVX.N"),  ("SLB.N",  "HAL.N"),
+    ("DAL.N",  "UAL.O"),
+    ("AMZN.O", "MSFT.O"), ("META.O", "GOOGL.O"),
+    ("AMZN.O", "GOOGL.O"),
+    ("JNJ.N",  "PFE.N"),  ("MRK.N",  "ABBV.N"),
+]
+
+# In-sample / out-of-sample date split
+TRAIN_START = "2018-01-01"
+TRAIN_END   = "2023-12-31"   # in-sample (6 years)
+TEST_START  = "2024-01-01"   # out-of-sample
+TEST_END    = "2025-12-31"
+
+RISK_FREE_RATE = 0.02        # annualised; 3M T-bill average
 \end{Verbatim}
 
 \end{document}
