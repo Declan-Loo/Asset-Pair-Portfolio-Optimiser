@@ -623,6 +623,53 @@ with tab_compare:
             st.markdown("**Historical MPT**")
             st.plotly_chart(plot_drawdown(mpt_ret), width="stretch", key="cmp_dd_mpt")
 
+        # Bootstrap confidence intervals
+        st.subheader("Bootstrap confidence intervals for Sharpe ratio")
+        st.caption(
+            "95% confidence intervals derived from 10,000 bootstrap resamples (with replacement) "
+            "of daily returns. Wide intervals reflect the short OOS window (~501 trading days)."
+        )
+        n_boot = 10_000
+        rng = np.random.default_rng(42)
+
+        def bootstrap_sharpe(returns: pd.Series, n: int, rf: float) -> tuple[float, float]:
+            daily_rf = rf / 252
+            excess = returns.values - daily_rf
+            T = len(excess)
+            idx = rng.integers(0, T, size=(n, T))
+            samples = excess[idx]
+            boot_sharpes = samples.mean(axis=1) / samples.std(axis=1, ddof=1) * np.sqrt(252)
+            return float(np.percentile(boot_sharpes, 2.5)), float(np.percentile(boot_sharpes, 97.5))
+
+        boot_rows = []
+        all_strats = {"Spread-based (equal-weight)": strategy_ret, "Historical MPT": mpt_ret}
+        for bname, bret in benchmarks_c.items():
+            label = {"risk_free": "Risk-free", "buy_hold_pair": "B&H (pair)", "equal_weight_pairs": "Equal-weight pairs", "sp500": "S&P 500"}.get(bname, bname)
+            if label != "Risk-free":
+                all_strats[label] = bret
+
+        for strat_name, ret in all_strats.items():
+            daily_rf = rf_annual / 252
+            sr = (ret.mean() - daily_rf) / ret.std(ddof=1) * np.sqrt(252)
+            lo, hi = bootstrap_sharpe(ret, n_boot, rf_annual)
+            boot_rows.append({
+                "Strategy": strat_name,
+                "Sharpe": sr,
+                "95% CI Lower": lo,
+                "95% CI Upper": hi,
+                "Sig. > 0": "Yes" if lo > 0 else "No",
+            })
+
+        boot_df = pd.DataFrame(boot_rows).set_index("Strategy")
+        st.dataframe(
+            boot_df.style.format("{:.3f}", subset=["Sharpe", "95% CI Lower", "95% CI Upper"], na_rep="N/A"),
+            width="stretch",
+        )
+        st.caption(
+            "No strategy achieves a lower bound strictly above zero, reflecting high Sharpe "
+            "estimation variance over a ~2-year OOS window."
+        )
+
 # ===== TAB 6: Portfolio Optimisation =====
 with tab_opt:
     st.header("Portfolio Optimisation: Spread-Based vs Traditional MPT")
