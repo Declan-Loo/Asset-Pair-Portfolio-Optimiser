@@ -106,8 +106,15 @@ def _portfolio_stats(
     cov_matrix: np.ndarray,
     periods_per_year: int = 252,
 ) -> tuple[float, float]:
-    """Annualised return and volatility for a given weight vector."""
-    port_return = np.dot(weights, mean_returns) * periods_per_year
+    """Annualised arithmetic return and volatility for a given weight vector.
+
+    ``mean_returns`` is expected to be in daily log-return units (as produced
+    by ``return_estimation``).  The annualised log return is converted to an
+    annualised arithmetic return via ``expm1`` so that Sharpe-ratio
+    calculations use a properly compounded return figure.
+    """
+    log_port_return = np.dot(weights, mean_returns) * periods_per_year
+    port_return = np.expm1(log_port_return)   # compound log → arithmetic
     port_vol = np.sqrt(
         np.dot(weights, np.dot(cov_matrix, weights)) * periods_per_year
     )
@@ -117,6 +124,7 @@ def _portfolio_stats(
 def minimum_variance_weights(
     returns: pd.DataFrame,
     cov_matrix: pd.DataFrame | np.ndarray | None = None,
+    l2_reg: float = 0.0,
 ) -> np.ndarray:
     """
     Minimum-variance portfolio weights (long-only constraint).
@@ -129,6 +137,10 @@ def minimum_variance_weights(
         Custom covariance matrix (e.g. shrinkage estimator from
         ``return_estimation.shrinkage_covariance``).  If None, uses
         the sample covariance of ``returns``.
+    l2_reg : float
+        L2 regularisation strength (ridge penalty).  Adds ``l2_reg * ||w||²``
+        to the objective, pulling weights toward equal-weight and reducing
+        concentration.  Default 0.0 (no regularisation).
 
     Returns
     -------
@@ -138,7 +150,7 @@ def minimum_variance_weights(
     _, cov = _resolve_inputs(returns, cov_matrix=cov_matrix)
 
     def objective(w):
-        return np.dot(w, np.dot(cov, w))
+        return np.dot(w, np.dot(cov, w)) + l2_reg * np.dot(w, w)
 
     constraints = {"type": "eq", "fun": lambda w: np.sum(w) - 1}
     bounds = [(0.0, 1.0)] * n
@@ -146,16 +158,17 @@ def minimum_variance_weights(
 
     result = minimize(
         objective, x0, method="SLSQP", bounds=bounds, constraints=constraints,
-        options={"ftol": 1e-12, "maxiter": 1000}   # ← add this
+        options={"ftol": 1e-12, "maxiter": 1000},
     )
     return result.x
 
-def max_sharpe_weights(
+def maximum_sharpe_weights(
     returns: pd.DataFrame,
     expected_returns: pd.Series | np.ndarray | None = None,
     cov_matrix: pd.DataFrame | np.ndarray | None = None,
     rf_annual: float = 0.02,
     periods_per_year: int = 252,
+    l2_reg: float = 0.0,
 ) -> np.ndarray:
     """
     Maximum Sharpe ratio (tangency) portfolio weights (long-only).
@@ -173,6 +186,10 @@ def max_sharpe_weights(
         Annualised risk-free rate.
     periods_per_year : int
         Trading days per year.
+    l2_reg : float
+        L2 regularisation strength (ridge penalty).  Adds ``l2_reg * ||w||²``
+        to the negative Sharpe objective, discouraging extreme concentration.
+        Default 0.0 (no regularisation).
 
     Returns
     -------
@@ -185,24 +202,26 @@ def max_sharpe_weights(
         port_ret, port_vol = _portfolio_stats(w, mean_ret, cov, periods_per_year)
         if port_vol == 0:
             return 1e6
-        return -(port_ret - rf_annual) / port_vol
+        return -(port_ret - rf_annual) / port_vol + l2_reg * np.dot(w, w)
 
     constraints = {"type": "eq", "fun": lambda w: np.sum(w) - 1}
     bounds = [(0.0, 1.0)] * n
     x0 = np.ones(n) / n
 
     result = minimize(
-        neg_sharpe, x0, method="SLSQP", bounds=bounds, constraints=constraints
+        neg_sharpe, x0, method="SLSQP", bounds=bounds, constraints=constraints,
+        options={"ftol": 1e-12, "maxiter": 1000},
     )
     return result.x
 
 
-def mean_variance_weights(
+def optimise_portfolio(
     returns: pd.DataFrame,
     expected_returns: pd.Series | np.ndarray | None = None,
     cov_matrix: pd.DataFrame | np.ndarray | None = None,
     rf_annual: float = 0.02,
     periods_per_year: int = 252,
+    l2_reg: float = 0.0,
 ) -> dict:
     """
     Convenience wrapper returning both max-Sharpe and min-variance portfolios.
@@ -213,25 +232,28 @@ def mean_variance_weights(
         Daily returns for each asset / spread.
     expected_returns : pd.Series | np.ndarray | None
         Custom daily expected-return vector.  Passed through to
-        ``max_sharpe_weights`` (min-variance does not use it).
+        ``maximum_sharpe_weights`` (min-variance does not use it).
     cov_matrix : pd.DataFrame | np.ndarray | None
         Custom covariance matrix.  Passed to both optimisers.
     rf_annual : float
     periods_per_year : int
+    l2_reg : float
+        L2 regularisation strength.  Passed to both optimisers.
 
     Returns
     -------
     dict with keys:
-        max_sharpe_weights, min_var_weights,
+        maximum_sharpe_weights, min_var_weights,
         max_sharpe_return, max_sharpe_vol,
         min_var_return, min_var_vol
     """
     mean_ret, cov = _resolve_inputs(returns, expected_returns, cov_matrix)
 
-    w_sharpe = max_sharpe_weights(
+    w_sharpe = maximum_sharpe_weights(
         returns, expected_returns, cov_matrix, rf_annual, periods_per_year,
+        l2_reg=l2_reg,
     )
-    w_minvar = minimum_variance_weights(returns, cov_matrix)
+    w_minvar = minimum_variance_weights(returns, cov_matrix, l2_reg=l2_reg)
 
     sr_ret, sr_vol = _portfolio_stats(w_sharpe, mean_ret, cov, periods_per_year)
     mv_ret, mv_vol = _portfolio_stats(w_minvar, mean_ret, cov, periods_per_year)
@@ -246,13 +268,14 @@ def mean_variance_weights(
     }
 
 
-def efficient_frontier(
+def compute_efficient_frontier(
     returns: pd.DataFrame,
     expected_returns: pd.Series | np.ndarray | None = None,
     cov_matrix: pd.DataFrame | np.ndarray | None = None,
     n_points: int = 50,
     rf_annual: float = 0.02,
     periods_per_year: int = 252,
+    l2_reg: float = 0.0,
 ) -> pd.DataFrame:
     """
     Compute the efficient frontier: for a range of target returns, find the
@@ -269,6 +292,9 @@ def efficient_frontier(
     n_points : int
     rf_annual : float
     periods_per_year : int
+    l2_reg : float
+        L2 regularisation strength.  Passed to the min-variance anchor
+        and added to each frontier point's objective.
 
     Returns
     -------
@@ -278,17 +304,25 @@ def efficient_frontier(
     mean_ret, cov = _resolve_inputs(returns, expected_returns, cov_matrix)
 
     # Anchor on the min-var and max-return portfolios
-    w_min = minimum_variance_weights(returns, cov_matrix)
+    w_min = minimum_variance_weights(returns, cov_matrix, l2_reg=l2_reg)
     ret_min, _ = _portfolio_stats(w_min, mean_ret, cov, periods_per_year)
     ret_max = float(np.max(mean_ret)) * periods_per_year
 
+    # Guard: if all expected returns are negative, ret_max < ret_min.
+    # Swap so linspace always runs low → high.
+    if ret_max < ret_min:
+        ret_min, ret_max = ret_max, ret_min
+
     target_returns = np.linspace(ret_min, ret_max, n_points)
+
+    def _min_var_objective(w):
+        return np.dot(w, np.dot(cov, w)) + l2_reg * np.dot(w, w)
+
     records = []
+    bounds = [(0.0, 1.0)] * n
+    x0 = np.ones(n) / n
 
     for target in target_returns:
-        def objective(w):
-            return np.dot(w, np.dot(cov, w))
-
         constraints = [
             {"type": "eq", "fun": lambda w: np.sum(w) - 1},
             {
@@ -296,15 +330,14 @@ def efficient_frontier(
                 "fun": lambda w, t=target: np.dot(w, mean_ret) * periods_per_year - t,
             },
         ]
-        bounds = [(0.0, 1.0)] * n
-        x0 = np.ones(n) / n
 
         result = minimize(
-            objective,
+            _min_var_objective,
             x0,
             method="SLSQP",
             bounds=bounds,
             constraints=constraints,
+            options={"ftol": 1e-12, "maxiter": 1000},
         )
 
         if result.success:

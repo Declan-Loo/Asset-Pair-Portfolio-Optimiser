@@ -45,7 +45,7 @@ def is_I1(series: pd.Series, significance: float = 0.05) -> dict:
     """
     Check if a series is plausibly I(1):
     - non-stationary in levels
-    - stationary in first differences
+    - stationary in first differences (log of current price - log of price day before) - as prices can't be stationary due to its randomness, but their returns can be stationary
     """
     level_result = adf_test(series, significance=significance)
     diff_result = adf_test(series.diff(), significance=significance)
@@ -65,12 +65,12 @@ def engle_granger_test(
     Engle-Granger two-step cointegration test.
 
     Step 1: OLS regression  y = α + β·x + ε  (β is the hedge ratio).
-    Step 2: ADF test on residuals ε.
+    Step 2: ADF test on residuals ε with `coint` function from `statsmodels`
 
     Parameters
     ----------
     y, x : pd.Series
-        Price series of the two assets (aligned index).
+        Price series of the two assets (aligned index). We pass the log prices as assets in pairs can be priced very differently
     significance : float
         Significance level for ADF test on residuals.
 

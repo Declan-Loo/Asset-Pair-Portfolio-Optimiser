@@ -1,0 +1,4 @@
+# Theme: primary actions (including the sidebar Execute button) use this colour
+# in both light and dark mode. Without this, dark mode can override ad-hoc CSS.
+[theme]
+primaryColor = "#22c55e"

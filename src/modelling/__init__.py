@@ -30,21 +30,21 @@ from .return_estimation import (
     compute_spread_returns,
     build_spread_return_matrix,
     historical_mean_return,
-    ewma_return,
-    ou_expected_return,
-    build_ou_expected_returns,
+    ewma_mean_return,
+    ou_implied_spread_return,
+    build_ou_implied_returns,
     sample_covariance,
     shrinkage_covariance,
-    spread_vs_traditional_estimates,
+    spread_vs_asset_estimates,
 )
 
 from .optimiser import (
     ols_hedge_ratio,
     rolling_hedge_ratio,
-    mean_variance_weights,
+    optimise_portfolio,
     minimum_variance_weights,
-    max_sharpe_weights,
-    efficient_frontier,
+    maximum_sharpe_weights,
+    compute_efficient_frontier,
 )
 
 __all__ = [
@@ -74,17 +74,17 @@ __all__ = [
     "compute_spread_returns",
     "build_spread_return_matrix",
     "historical_mean_return",
-    "ewma_return",
-    "ou_expected_return",
-    "build_ou_expected_returns",
+    "ewma_mean_return",
+    "ou_implied_spread_return",
+    "build_ou_implied_returns",
     "sample_covariance",
     "shrinkage_covariance",
-    "spread_vs_traditional_estimates",
+    "spread_vs_asset_estimates",
     # Optimiser
     "ols_hedge_ratio",
     "rolling_hedge_ratio",
-    "mean_variance_weights",
+    "optimise_portfolio",
     "minimum_variance_weights",
-    "max_sharpe_weights",
-    "efficient_frontier",
+    "maximum_sharpe_weights",
+    "compute_efficient_frontier",
 ]

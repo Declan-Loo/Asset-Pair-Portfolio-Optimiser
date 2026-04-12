@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.6)  25 MAR 2026 18:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.6)  12 APR 2026 13:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex"
-(/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex
+**"/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex"
+(/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-02-22> (/usr/local/texlive/2023/texmf-dist/tex/latex/base/report.cls
 Document Class: report 2022/07/02 v1.4n Standard LaTeX document class
@@ -149,31 +149,211 @@ LaTeX Info: Redefining \Relbar on input line 971.
 \mathdisplay@stack=\toks22
 LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
-) (/usr/local/texlive/2023/texmf-dist/tex/latex/float/float.sty
-Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count276
-\float@exts=\toks23
-\float@box=\box53
-\@float@everytoks=\toks24
-\@floatcapt=\box54
-) (/usr/local/texlive/2023/texmf-dist/tex/latex/multirow/multirow.sty
-Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
-\multirow@colwidth=\skip53
-\multirow@cntb=\count277
-\multirow@dima=\skip54
-\bigstrutjot=\dimen165
-) (/usr/local/texlive/2023/texmf-dist/tex/latex/siunitx/siunitx.sty
-Package: siunitx 2023-03-04 v3.2.2 A comprehensive (SI) units package
-\l__siunitx_angle_tmp_dim=\dimen166
-\l__siunitx_angle_marker_box=\box55
-\l__siunitx_angle_unit_box=\box56
-\l__siunitx_compound_count_int=\count278
- (/usr/local/texlive/2023/texmf-dist/tex/latex/translations/translations.sty
-Package: translations 2022/02/05 v1.12 internationalization of LaTeX2e packages (CN)
- (/usr/local/texlive/2023/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count279
-) (/usr/local/texlive/2023/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks23
+\pgfutil@tempdima=\dimen165
+\pgfutil@tempdimb=\dimen166
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box53
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+))
+Package: pgf 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks24
+\pgfkeys@temptoks=\toks25
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.tex
+\pgfkeys@tmptoks=\toks26
+))
+\pgf@x=\dimen167
+\pgf@y=\dimen168
+\pgf@xa=\dimen169
+\pgf@ya=\dimen170
+\pgf@xb=\dimen171
+\pgf@yb=\dimen172
+\pgf@xc=\dimen173
+\pgf@yc=\dimen174
+\pgf@xd=\dimen175
+\pgf@yd=\dimen176
+\w@pgf@writea=\write3
+\r@pgf@reada=\read2
+\c@pgf@counta=\count276
+\c@pgf@countb=\count277
+\c@pgf@countc=\count278
+\c@pgf@countd=\count279
+\t@pgf@toka=\toks27
+\t@pgf@tokb=\toks28
+\t@pgf@tokc=\toks29
+\pgf@sys@id@count=\count280
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+)
+Driver file for pgf: pgfsys-pdftex.def
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+))) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count281
+\pgfsyssoftpath@bigbuffer@items=\count282
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (/usr/local/texlive/2023/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+LaTeX Info: Redefining \color on input line 711.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1357.
+Package xcolor Info: Model `RGB' extended on input line 1369.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen177
+\pgfmath@count=\count283
+\pgfmath@box=\box54
+\pgfmath@toks=\toks30
+\pgfmath@stack@operand=\toks31
+\pgfmath@stack@operation=\toks32
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count284
+)) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfint.code.tex) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@picminx=\dimen178
+\pgf@picmaxx=\dimen179
+\pgf@picminy=\dimen180
+\pgf@picmaxy=\dimen181
+\pgf@pathminx=\dimen182
+\pgf@pathmaxx=\dimen183
+\pgf@pathminy=\dimen184
+\pgf@pathmaxy=\dimen185
+\pgf@xx=\dimen186
+\pgf@xy=\dimen187
+\pgf@yx=\dimen188
+\pgf@yy=\dimen189
+\pgf@zx=\dimen190
+\pgf@zy=\dimen191
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@path@lastx=\dimen192
+\pgf@path@lasty=\dimen193
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@shorten@end@additional=\dimen194
+\pgf@shorten@start@additional=\dimen195
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfpic=\box55
+\pgf@hbox=\box56
+\pgf@layerbox@main=\box57
+\pgf@picture@serial@count=\count285
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgflinewidth=\dimen196
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
+File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@pt@x=\dimen197
+\pgf@pt@y=\dimen198
+\pgf@pt@temp=\dimen199
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowsep=\dimen256
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@max=\dimen257
+\pgf@sys@shading@range@num=\count286
+\pgf@shadingcount=\count287
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
+File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfexternal@startupbox=\box58
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex
+File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodeparttextbox=\box59
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
+\pgf@nodesepstart=\dimen258
+\pgf@nodesepend=\dimen259
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
+)) (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/utilities/pgffor.sty (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)) (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/math/pgfmath.sty (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
+\pgffor@iter=\dimen260
+\pgffor@skip=\dimen261
+\pgffor@stack=\toks33
+\pgffor@toks=\toks34
+)) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+Package: tikz 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@plot@mark@count=\count288
+\pgfplotmarksize=\dimen262
+)
+\tikz@lastx=\dimen263
+\tikz@lasty=\dimen264
+\tikz@lastxsaved=\dimen265
+\tikz@lastysaved=\dimen266
+\tikz@lastmovetox=\dimen267
+\tikz@lastmovetoy=\dimen268
+\tikzleveldistance=\dimen269
+\tikzsiblingdistance=\dimen270
+\tikz@figbox=\box60
+\tikz@figbox@bg=\box61
+\tikz@tempbox=\box62
+\tikz@tempbox@bg=\box63
+\tikztreelevel=\count289
+\tikznumberofchildren=\count290
+\tikznumberofcurrentchild=\count291
+\tikz@fig@count=\count292
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfmatrixcurrentrow=\count293
+\pgfmatrixcurrentcolumn=\count294
+\pgf@matrix@numberofcolumns=\count295
+)
+\tikz@expandcount=\count296
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.tex
+File: pgflibraryarrows.meta.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowinset=\dimen271
+\pgfarrowlength=\dimen272
+\pgfarrowwidth=\dimen273
+\pgfarrowlinewidth=\dimen274
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/biblatex.sty
+Package: biblatex 2023/03/05 v3.19 programmable bibliographies (PK/MW)
+ (/usr/local/texlive/2023/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
  (/usr/local/texlive/2023/texmf-dist/tex/generic/infwarerr/infwarerr.sty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
@@ -185,102 +365,445 @@ Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count297
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)) (/usr/local/texlive/2023/texmf-dist/tex/latex/logreq/logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count298
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/logreq/logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+)) (/usr/local/texlive/2023/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+\c@tabx@nest=\count299
+\c@listtotal=\count300
+\c@listcount=\count301
+\c@liststart=\count302
+\c@liststop=\count303
+\c@citecount=\count304
+\c@citetotal=\count305
+\c@multicitecount=\count306
+\c@multicitetotal=\count307
+\c@instcount=\count308
+\c@maxnames=\count309
+\c@minnames=\count310
+\c@maxitems=\count311
+\c@minitems=\count312
+\c@citecounter=\count313
+\c@maxcitecounter=\count314
+\c@savedcitecounter=\count315
+\c@uniquelist=\count316
+\c@uniquename=\count317
+\c@refsection=\count318
+\c@refsegment=\count319
+\c@maxextratitle=\count320
+\c@maxextratitleyear=\count321
+\c@maxextraname=\count322
+\c@maxextradate=\count323
+\c@maxextraalpha=\count324
+\c@abbrvpenalty=\count325
+\c@highnamepenalty=\count326
+\c@lownamepenalty=\count327
+\c@maxparens=\count328
+\c@parenlevel=\count329
+\blx@tempcnta=\count330
+\blx@tempcntb=\count331
+\blx@tempcntc=\count332
+\c@blx@maxsection=\count333
+\blx@maxsegment@0=\count334
+\blx@notetype=\count335
+\blx@parenlevel@text=\count336
+\blx@parenlevel@foot=\count337
+\blx@sectionciteorder@0=\count338
+\blx@sectionciteorderinternal@0=\count339
+\blx@entrysetcounter=\count340
+\blx@biblioinstance=\count341
+\labelnumberwidth=\skip53
+\labelalphawidth=\skip54
+\biblabelsep=\skip55
+\bibitemsep=\skip56
+\bibnamesep=\skip57
+\bibinitsep=\skip58
+\bibparsep=\skip59
+\bibhang=\skip60
+\blx@bcfin=\read3
+\blx@bcfout=\write4
+\blx@langwohyphens=\language87
+\c@mincomprange=\count342
+\c@maxcomprange=\count343
+\c@mincompwidth=\count344
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/blx-dm.def
+File: blx-dm.def 2023/03/05 v3.19 biblatex localization (PK/MW)
+)
+Package biblatex Info: Trying to load biblatex style data model...
+Package biblatex Info: ... file 'ieee.dbx' not found.
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count345
+\c@savedafterword=\count346
+\c@annotator=\count347
+\c@savedannotator=\count348
+\c@author=\count349
+\c@savedauthor=\count350
+\c@bookauthor=\count351
+\c@savedbookauthor=\count352
+\c@commentator=\count353
+\c@savedcommentator=\count354
+\c@editor=\count355
+\c@savededitor=\count356
+\c@editora=\count357
+\c@savededitora=\count358
+\c@editorb=\count359
+\c@savededitorb=\count360
+\c@editorc=\count361
+\c@savededitorc=\count362
+\c@foreword=\count363
+\c@savedforeword=\count364
+\c@holder=\count365
+\c@savedholder=\count366
+\c@introduction=\count367
+\c@savedintroduction=\count368
+\c@namea=\count369
+\c@savednamea=\count370
+\c@nameb=\count371
+\c@savednameb=\count372
+\c@namec=\count373
+\c@savednamec=\count374
+\c@translator=\count375
+\c@savedtranslator=\count376
+\c@shortauthor=\count377
+\c@savedshortauthor=\count378
+\c@shorteditor=\count379
+\c@savedshorteditor=\count380
+\c@labelname=\count381
+\c@savedlabelname=\count382
+\c@institution=\count383
+\c@savedinstitution=\count384
+\c@lista=\count385
+\c@savedlista=\count386
+\c@listb=\count387
+\c@savedlistb=\count388
+\c@listc=\count389
+\c@savedlistc=\count390
+\c@listd=\count391
+\c@savedlistd=\count392
+\c@liste=\count393
+\c@savedliste=\count394
+\c@listf=\count395
+\c@savedlistf=\count396
+\c@location=\count397
+\c@savedlocation=\count398
+\c@organization=\count399
+\c@savedorganization=\count400
+\c@origlocation=\count401
+\c@savedoriglocation=\count402
+\c@origpublisher=\count403
+\c@savedorigpublisher=\count404
+\c@publisher=\count405
+\c@savedpublisher=\count406
+\c@language=\count407
+\c@savedlanguage=\count408
+\c@origlanguage=\count409
+\c@savedoriglanguage=\count410
+\c@pageref=\count411
+\c@savedpageref=\count412
+\shorthandwidth=\skip61
+\shortjournalwidth=\skip62
+\shortserieswidth=\skip63
+\shorttitlewidth=\skip64
+\shortauthorwidth=\skip65
+\shorteditorwidth=\skip66
+\locallabelnumberwidth=\skip67
+\locallabelalphawidth=\skip68
+\localshorthandwidth=\skip69
+\localshortjournalwidth=\skip70
+\localshortserieswidth=\skip71
+\localshorttitlewidth=\skip72
+\localshortauthorwidth=\skip73
+\localshorteditorwidth=\skip74
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/blx-compat.def
+File: blx-compat.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/biblatex.def
+File: biblatex.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
+\c@textcitecount=\count413
+\c@textcitetotal=\count414
+\c@textcitemaxnames=\count415
+\c@biburlbigbreakpenalty=\count416
+\c@biburlbreakpenalty=\count417
+\c@biburlnumpenalty=\count418
+\c@biburlucpenalty=\count419
+\c@biburllcpenalty=\count420
+\biburlbigskip=\muskip18
+\biburlnumskip=\muskip19
+\biburlucskip=\muskip20
+\biburllcskip=\muskip21
+\c@smartand=\count421
+)
+Package biblatex Info: Trying to load bibliography style 'ieee'...
+Package biblatex Info: ... file 'ieee.bbx' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex-ieee/ieee.bbx
+File: ieee.bbx 2021/12/06 v1.3f biblatex bibliography style
+Package biblatex Info: Trying to load bibliography style 'numeric-comp'...
+Package biblatex Info: ... file 'numeric-comp.bbx' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx
+File: numeric-comp.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'numeric'...
+Package biblatex Info: ... file 'numeric.bbx' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+File: numeric.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
+File: standard.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count422
+\c@bbx:relatedtotal=\count423
+))))
+Package biblatex Info: Trying to load citation style 'ieee'...
+Package biblatex Info: ... file 'ieee.cbx' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex-ieee/ieee.cbx
+File: ieee.cbx 2021/12/06 v1.3f biblatex citation style
+Package biblatex Info: Trying to load citation style 'numeric-comp'...
+Package biblatex Info: ... file 'numeric-comp.cbx' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx
+File: numeric-comp.cbx 2023/03/05 v3.19 biblatex citation style (PK/MW)
+\c@cbx@tempcnta=\count424
+\c@cbx@tempcntb=\count425
+\c@cbx@tempcntc=\count426
+\c@cbx@tempcntd=\count427
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\smartcites'.
+)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\cites'.
+)
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/biblatex.cfg
+File: biblatex.cfg 
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Document encoding is UTF8 ....
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2023-02-22 L3 programming layer (loader) 
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count428
+\l__pdf_internal_box=\box64
 ))
-\l__siunitx_number_exponent_fixed_int=\count280
-\l__siunitx_number_min_decimal_int=\count281
-\l__siunitx_number_min_integer_int=\count282
-\l__siunitx_number_round_precision_int=\count283
-\l__siunitx_number_lower_threshold_int=\count284
-\l__siunitx_number_upper_threshold_int=\count285
-\l__siunitx_number_group_first_int=\count286
-\l__siunitx_number_group_size_int=\count287
-\l__siunitx_number_group_minimum_int=\count288
-\l__siunitx_table_tmp_box=\box57
-\l__siunitx_table_tmp_dim=\dimen167
-\l__siunitx_table_column_width_dim=\dimen168
-\l__siunitx_table_integer_box=\box58
-\l__siunitx_table_decimal_box=\box59
-\l__siunitx_table_uncert_box=\box60
-\l__siunitx_table_before_box=\box61
-\l__siunitx_table_after_box=\box62
-\l__siunitx_table_before_dim=\dimen169
-\l__siunitx_table_carry_dim=\dimen170
-\l__siunitx_unit_tmp_int=\count289
-\l__siunitx_unit_position_int=\count290
-\l__siunitx_unit_total_int=\count291
+Package biblatex Info: ... and expl3
+(biblatex)             2023-02-22 L3 programming layer (loader) 
+(biblatex)             is new enough (at least 2020/04/06),
+(biblatex)             setting 'casechanger=expl3'.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty (/usr/local/texlive/2023/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2023-02-02 L3 Experimental document command parser
+)
+Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
+)) (/usr/local/texlive/2023/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2023/01/19 4.5a verbatim text (tvz,hv)
+\FV@CodeLineNo=\count429
+\FV@InFile=\read4
+\FV@TabBox=\box65
+\c@FancyVerbLine=\count430
+\FV@StepNumber=\count431
+\FV@OutFile=\write5
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count432
+\float@exts=\toks35
+\float@box=\box66
+\@float@everytoks=\toks36
+\@floatcapt=\box67
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip75
+\multirow@cntb=\count433
+\multirow@dima=\skip76
+\bigstrutjot=\dimen275
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+Package: pdfpages 2022/12/19 v0.5x Insert pages of external PDF documents (AM)
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count434
+\calc@Bcount=\count435
+\calc@Adimen=\dimen276
+\calc@Bdimen=\dimen277
+\calc@Askip=\skip77
+\calc@Bskip=\skip78
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count436
+\calc@Cskip=\skip79
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+Package: eso-pic 2020/10/14 v3.0a eso-pic (RN)
+\ESO@tempdima=\dimen278
+\ESO@tempdimb=\dimen279
+)
+\AM@pagewidth=\dimen280
+\AM@pageheight=\dimen281
+\AM@fboxrule=\dimen282
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/pdfpages/pppdftex.def
+File: pppdftex.def 2022/12/19 v0.5x Pdfpages driver for pdfTeX (AM)
+)
+\pdfpages@includegraphics@status=\count437
+\AM@pagebox=\box68
+\AM@global@opts=\toks37
+\AM@pagecnt=\count438
+\AM@toc@title=\toks38
+\AM@lof@heading=\toks39
+\c@AM@survey=\count439
+\AM@templatesizebox=\box69
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/siunitx/siunitx.sty
+Package: siunitx 2023-03-04 v3.2.2 A comprehensive (SI) units package
+\l__siunitx_angle_tmp_dim=\dimen283
+\l__siunitx_angle_marker_box=\box70
+\l__siunitx_angle_unit_box=\box71
+\l__siunitx_compound_count_int=\count440
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/translations/translations.sty
+Package: translations 2022/02/05 v1.12 internationalization of LaTeX2e packages (CN)
+)
+\l__siunitx_number_exponent_fixed_int=\count441
+\l__siunitx_number_min_decimal_int=\count442
+\l__siunitx_number_min_integer_int=\count443
+\l__siunitx_number_round_precision_int=\count444
+\l__siunitx_number_lower_threshold_int=\count445
+\l__siunitx_number_upper_threshold_int=\count446
+\l__siunitx_number_group_first_int=\count447
+\l__siunitx_number_group_size_int=\count448
+\l__siunitx_number_group_minimum_int=\count449
+\l__siunitx_table_tmp_box=\box72
+\l__siunitx_table_tmp_dim=\dimen284
+\l__siunitx_table_column_width_dim=\dimen285
+\l__siunitx_table_integer_box=\box73
+\l__siunitx_table_decimal_box=\box74
+\l__siunitx_table_uncert_box=\box75
+\l__siunitx_table_before_box=\box76
+\l__siunitx_table_after_box=\box77
+\l__siunitx_table_before_dim=\dimen286
+\l__siunitx_table_carry_dim=\dimen287
+\l__siunitx_unit_tmp_int=\count450
+\l__siunitx_unit_position_int=\count451
+\l__siunitx_unit_total_int=\count452
  (/usr/local/texlive/2023/texmf-dist/tex/latex/tools/array.sty
 Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
-\col@sep=\dimen171
-\ar@mcellbox=\box63
-\extrarowheight=\dimen172
-\NC@list=\toks25
-\extratabsurround=\skip55
-\backup@length=\skip56
-\ar@cellbox=\box64
+\col@sep=\dimen288
+\ar@mcellbox=\box78
+\extrarowheight=\dimen289
+\NC@list=\toks40
+\extratabsurround=\skip80
+\backup@length=\skip81
+\ar@cellbox=\box79
 )) (/usr/local/texlive/2023/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
  (/usr/local/texlive/2023/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 )
-\Gm@cnth=\count292
-\Gm@cntv=\count293
-\c@Gm@tempcnt=\count294
-\Gm@bindingoffset=\dimen173
-\Gm@wd@mp=\dimen174
-\Gm@odd@mp=\dimen175
-\Gm@even@mp=\dimen176
-\Gm@layoutwidth=\dimen177
-\Gm@layoutheight=\dimen178
-\Gm@layouthoffset=\dimen179
-\Gm@layoutvoffset=\dimen180
-\Gm@dimlist=\toks26
+\Gm@cnth=\count453
+\Gm@cntv=\count454
+\c@Gm@tempcnt=\count455
+\Gm@bindingoffset=\dimen290
+\Gm@wd@mp=\dimen291
+\Gm@odd@mp=\dimen292
+\Gm@even@mp=\dimen293
+\Gm@layoutwidth=\dimen294
+\Gm@layoutheight=\dimen295
+\Gm@layouthoffset=\dimen296
+\Gm@layoutvoffset=\dimen297
+\Gm@dimlist=\toks41
 )
-\c@theorem=\count295
-Package translations Info: No language package found. I am going to use `english' as default language. on input line 59.
- (/usr/local/texlive/2023/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count296
-\l__pdf_internal_box=\box65
-)
+\c@theorem=\count456
+\@quotelevel=\count457
+\@quotereset=\count458
+Package translations Info: No language package found. I am going to use `english' as default language. on input line 64.
+
 No file main.aux.
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
 (/usr/local/texlive/2023/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count297
-\scratchdimen=\dimen181
-\scratchbox=\box66
-\nofMPsegments=\count298
-\nofMParguments=\count299
-\everyMPshowfont=\toks27
-\MPscratchCnt=\count300
-\MPscratchDim=\dimen182
-\MPnumerator=\count301
-\makeMPintoPDFobject=\count302
-\everyMPtoPDFconversion=\toks28
+\scratchcounter=\count459
+\scratchdimen=\dimen298
+\scratchbox=\box80
+\nofMPsegments=\count460
+\nofMParguments=\count461
+\everyMPshowfont=\toks42
+\MPscratchCnt=\count462
+\MPscratchDim=\dimen299
+\MPnumerator=\count463
+\makeMPintoPDFobject=\count464
+\everyMPtoPDFconversion=\toks43
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/lbx/english.lbx
+File: english.lbx 2023/03/05 v3.19 biblatex localization (PK/MW)
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'utf8'.
+\openout4 = `main.bcf'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'main.bbl' not found.
+
+No file main.bbl.
+Package biblatex Info: Reference section=0 on input line 64.
+Package biblatex Info: Reference segment=0 on input line 64.
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+Package: pdflscape-nometadata 2022-10-28 v0.13 Display of landscape pages in PDF (HO)
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 )) (/usr/local/texlive/2023/texmf-dist/tex/latex/translations/translations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
-Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 59.
+Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 64.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -316,512 +839,897 @@ Package translations Info: loading dictionary `translations-basic-dictionary' fo
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 62.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 67.
 (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 62.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 67.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 62.
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 67.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 ) [1
 
 {/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [1]
 No file main.toc.
-\tf@toc=\write3
-\openout3 = `main.toc'.
+\tf@toc=\write6
+\openout6 = `main.toc'.
 
 [1
 
 ]
 Chapter 1.
 
-Overfull \hbox (41.76236pt too wide) in paragraph at lines 72--75
-\OT1/cmtt/m/n/10 https://moodle.ucl.ac.uk/pluginfile.php/3591429/mod[]resource/content/7/UGProjects2017.pdf\OT1/cmr/m/n/10 .
- []
+LaTeX Warning: Citation 'markowitz1959' on page 2 undefined on input line 79.
 
 
-LaTeX Warning: Reference `line1' on page 2 undefined on input line 92.
+LaTeX Warning: Citation 'ledoit2004' on page 2 undefined on input line 79.
+
+
+LaTeX Warning: Citation 'gatev2006' on page 2 undefined on input line 80.
 
 [2
 
-]
+{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+
+LaTeX Warning: Reference `chap:background' on page 3 undefined on input line 109.
+
+
+LaTeX Warning: Reference `chap:methodology' on page 3 undefined on input line 111.
+
+
+LaTeX Warning: Reference `chap:implementation' on page 3 undefined on input line 114.
+
+
+LaTeX Warning: Reference `chap:results' on page 3 undefined on input line 116.
+
+
+LaTeX Warning: Reference `chap:discussion' on page 3 undefined on input line 118.
+
+
+LaTeX Warning: Reference `chap:conclusions' on page 3 undefined on input line 120.
+
+[3]
 Chapter 2.
 
-LaTeX Warning: Citation `Rey:D' on page 3 undefined on input line 99.
+LaTeX Warning: Citation 'markowitz1959' on page 4 undefined on input line 125.
 
 
-LaTeX Warning: Citation `PriorNOP70' on page 3 undefined on input line 99.
+LaTeX Warning: Citation 'vidyamurthy2004' on page 4 undefined on input line 125.
 
-[3
 
-{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-Chapter 3.
+LaTeX Warning: Citation 'englegranger1987' on page 4 undefined on input line 125.
 
-LaTeX Warning: Reference `def' on page 4 undefined on input line 123.
+
+LaTeX Warning: Citation 'elliott2005' on page 4 undefined on input line 125.
+
+
+LaTeX Warning: Reference `chap:methodology' on page 4 undefined on input line 125.
+
+
+LaTeX Warning: Reference `chap:results' on page 4 undefined on input line 125.
+
+
+LaTeX Warning: Citation 'markowitz1959' on page 4 undefined on input line 129.
+
+
+LaTeX Warning: Citation 'markowitz1959' on page 4 undefined on input line 131.
+
+
+LaTeX Warning: Citation 'markowitz1959' on page 4 undefined on input line 131.
+
+
+LaTeX Warning: Citation 'fabozzi2002' on page 4 undefined on input line 131.
+
+
+LaTeX Warning: Citation 'fabozzi2002' on page 4 undefined on input line 131.
+
+
+LaTeX Warning: Citation 'fabozzi2002' on page 4 undefined on input line 131.
+
+
+LaTeX Warning: Citation 'fabozzi2002' on page 4 undefined on input line 131.
 
 [4
 
 ]
+
+LaTeX Warning: Citation 'ledoit2004' on page 5 undefined on input line 136.
+
+
+LaTeX Warning: Citation 'merton1980' on page 5 undefined on input line 136.
+
+
+LaTeX Warning: Citation 'brealey1969' on page 5 undefined on input line 138.
+
+
+LaTeX Warning: Citation 'englegranger1987' on page 5 undefined on input line 146.
+
+
+LaTeX Warning: Citation 'elliott2005' on page 5 undefined on input line 150.
+
+[5]
+Chapter 3.
+
+LaTeX Warning: Reference `sec:data_universe' on page 6 undefined on input line 159.
+
+
+LaTeX Warning: Reference `sec:coint_screening' on page 6 undefined on input line 159.
+
+
+LaTeX Warning: Reference `sec:spread_modelling' on page 6 undefined on input line 159.
+
+
+LaTeX Warning: Reference `sec:return_estimation' on page 6 undefined on input line 159.
+
+
+LaTeX Warning: Reference `sec:portfolio_opt' on page 6 undefined on input line 159.
+
+
+LaTeX Warning: Reference `sec:backtesting' on page 6 undefined on input line 159.
+
+
+LaTeX Warning: Reference `tab:universe' on page 6 undefined on input line 164.
+
+
+LaTeX Warning: Citation 'brealey1969' on page 6 undefined on input line 218.
+
+
+LaTeX Warning: Reference `sec:return-estimation' on page 6 undefined on input line 218.
+
+
+LaTeX Warning: Citation 'lsegdata2025' on page 6 undefined on input line 220.
+
+
+LaTeX Warning: Citation 'yfinance2026' on page 6 undefined on input line 220.
+
+[6
+
+]
+
+LaTeX Warning: Citation 'englegranger1987' on page 7 undefined on input line 232.
+
+
+LaTeX Warning: Citation 'englegranger1987' on page 7 undefined on input line 252.
+
+[7]
+
+LaTeX Warning: Citation 'mackinnon2010' on page 8 undefined on input line 260.
+
+
+LaTeX Warning: Reference `eq:coint_regression' on page 8 undefined on input line 276.
+
+
+LaTeX Warning: Citation 'gatev2006' on page 8 undefined on input line 282.
+
+[8]
+
+LaTeX Warning: Citation 'elliott2005' on page 9 undefined on input line 316.
+
+
+LaTeX Warning: Reference `eq:halflife' on page 9 undefined on input line 321.
+
+[9]
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <7> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 341.
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 341.
+
+
+LaTeX Warning: Reference `sec:portfolio_opt' on page 10 undefined on input line 341.
+
+
+LaTeX Warning: Citation 'merton1980' on page 10 undefined on input line 350.
+
+
+LaTeX Warning: Citation 'markowitz1959' on page 10 undefined on input line 355.
+
+[10] [11]
+
+LaTeX Warning: Reference `chap:implementation' on page 12 undefined on input line 445.
+
+[12]
 Chapter 4.
 
-LaTeX Warning: Reference `tab:cointegration_screening' on page 5 undefined on input line 172.
+LaTeX Warning: Reference `chap:methodology' on page 13 undefined on input line 450.
 
 
-LaTeX Warning: Reference `tab:spread_characterisation' on page 5 undefined on input line 174.
+LaTeX Warning: Reference `fig:pipeline' on page 13 undefined on input line 455.
 
 
-LaTeX Warning: Reference `fig:normalised_prices' on page 5 undefined on input line 174.
+Overfull \hbox (58.02309pt too wide) in paragraph at lines 464--465
+\OT1/cmr/m/n/10 note-books to im-port func-tions such as \OT1/cmtt/m/n/10 screen[]pairs()\OT1/cmr/m/n/10 , \OT1/cmtt/m/n/10 compute[]half[]life()\OT1/cmr/m/n/10 , and \OT1/cmtt/m/n/10 maximum[]sharpe[]weights()
+ []
 
 
-LaTeX Warning: Reference `fig:spread_rolling_zscore' on page 5 undefined on input line 174.
+Overfull \hbox (58.71646pt too wide) in paragraph at lines 502--503
+ [][] 
+ []
 
-
-LaTeX Warning: File `figures/01_normalised_prices.pdf' not found on input line 198.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:198: Package pdftex.def Error: File `figures/01_normalised_prices.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.198 ...twidth]{figures/01_normalised_prices.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/01_spread_characterisation.pdf' not found on input line 208.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:208: Package pdftex.def Error: File `figures/01_spread_characterisation.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.208 ...]{figures/01_spread_characterisation.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/01_spread_levels.pdf' not found on input line 221.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:221: Package pdftex.def Error: File `figures/01_spread_levels.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.221 ...\textwidth]{figures/01_spread_levels.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/01_spread_zscores.pdf' not found on input line 231.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:231: Package pdftex.def Error: File `figures/01_spread_zscores.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.231 ...textwidth]{figures/01_spread_zscores.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/01_spread_distributions.pdf' not found on input line 242.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:242: Package pdftex.def Error: File `figures/01_spread_distributions.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.242 ...dth]{figures/01_spread_distributions.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/01_spread_rolling_halflife.pdf' not found on input line 252.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:252: Package pdftex.def Error: File `figures/01_spread_rolling_halflife.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.252 ...]{figures/01_spread_rolling_halflife.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/01_spread_rolling_zscore.pdf' not found on input line 262.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:262: Package pdftex.def Error: File `figures/01_spread_rolling_zscore.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.262 ...th]{figures/01_spread_rolling_zscore.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[5
-
-] [6] [7] [8] [9] [10] [11] [12]
-
-LaTeX Warning: Reference `tab:oos_spread_stats' on page 13 undefined on input line 278.
-
-
-LaTeX Warning: Reference `tab:cointegration_validation' on page 13 undefined on input line 280.
-
-
-LaTeX Warning: Reference `fig:oos_eg_pvalues' on page 13 undefined on input line 281.
-
-
-LaTeX Warning: File `figures/02_oos_eg_pvalues.pdf' not found on input line 336.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:336: Package pdftex.def Error: File `figures/02_oos_eg_pvalues.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.336 ...textwidth]{figures/02_oos_eg_pvalues.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/02_spread_is_oos_concat.pdf' not found on input line 347.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:347: Package pdftex.def Error: File `figures/02_spread_is_oos_concat.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.347 ...dth]{figures/02_spread_is_oos_concat.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/02_spread_oos_levels.pdf' not found on input line 359.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:359: Package pdftex.def Error: File `figures/02_spread_oos_levels.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.359 ...twidth]{figures/02_spread_oos_levels.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/02_zscore_is_oos.pdf' not found on input line 370.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:370: Package pdftex.def Error: File `figures/02_zscore_is_oos.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.370 ...\textwidth]{figures/02_zscore_is_oos.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/02_rolling_halflife_is_oos.pdf' not found on input line 382.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:382: Package pdftex.def Error: File `figures/02_rolling_halflife_is_oos.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.382 ...]{figures/02_rolling_halflife_is_oos.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[13] [14] [15] [16] [17] [18]
-
-LaTeX Warning: Reference `tab:return_estimation' on page 19 undefined on input line 400.
-
-
-LaTeX Warning: File `figures/03_cumulative_returns.pdf' not found on input line 424.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:424: Package pdftex.def Error: File `figures/03_cumulative_returns.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.424 ...width]{figures/03_cumulative_returns.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/03_mu_comparison.pdf' not found on input line 435.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:435: Package pdftex.def Error: File `figures/03_mu_comparison.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.435 ...\textwidth]{figures/03_mu_comparison.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/03_correlation_heatmap.pdf' not found on input line 448.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:448: Package pdftex.def Error: File `figures/03_correlation_heatmap.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.448 ...idth]{figures/03_correlation_heatmap.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[19] [20] [21] [22]
-
-LaTeX Warning: Reference `tab:backtest_results' on page 23 undefined on input line 461.
-
-
-LaTeX Warning: File `figures/04_cumulative_returns.pdf' not found on input line 508.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:508: Package pdftex.def Error: File `figures/04_cumulative_returns.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.508 ...width]{figures/04_cumulative_returns.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/04_drawdown.pdf' not found on input line 519.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:519: Package pdftex.def Error: File `figures/04_drawdown.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.519 ...idth=\textwidth]{figures/04_drawdown.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/04_rolling_sharpe.pdf' not found on input line 529.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:529: Package pdftex.def Error: File `figures/04_rolling_sharpe.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.529 ...textwidth]{figures/04_rolling_sharpe.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/04_rolling_volatility.pdf' not found on input line 539.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:539: Package pdftex.def Error: File `figures/04_rolling_volatility.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.539 ...width]{figures/04_rolling_volatility.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/04_weights_bar.pdf' not found on input line 549.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:549: Package pdftex.def Error: File `figures/04_weights_bar.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.549 ...h=\textwidth]{figures/04_weights_bar.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/04_pair_cumulative_returns.pdf' not found on input line 560.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:560: Package pdftex.def Error: File `figures/04_pair_cumulative_returns.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.560 ...]{figures/04_pair_cumulative_returns.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/04_pair_zscores.pdf' not found on input line 571.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:571: Package pdftex.def Error: File `figures/04_pair_zscores.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.571 ...=\textwidth]{figures/04_pair_zscores.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/04_efficient_frontier.pdf' not found on input line 582.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:582: Package pdftex.def Error: File `figures/04_efficient_frontier.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.582 ...width]{figures/04_efficient_frontier.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figures/04_return_distribution.pdf' not found on input line 592.
-
-
-/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/main.tex:592: Package pdftex.def Error: File `figures/04_return_distribution.pdf' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.592 ...idth]{figures/04_return_distribution.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[23] [24] [25] [26] [27] [28] [29] [30] [31] [32]
-Chapter 5.
-[33
+[13
 
 ]
+Overfull \hbox (90.0552pt too wide) in paragraph at lines 509--510
+\OT1/cmr/m/n/10 Price data are re-trieved from the LSEG Re-fini-tiv Workspace API via a cus-tom client (\OT1/cmtt/m/n/10 src/data/refinitiv[]client.py\OT1/cmr/m/n/10 ).
+ []
+
+
+LaTeX Warning: Reference `eq:ar1' on page 14 undefined on input line 523.
+
+
+Overfull \hbox (26.2399pt too wide) in paragraph at lines 523--524
+[]\OT1/cmr/m/n/10 These are im-ple-mented in the \OT1/cmtt/m/n/10 spread[]analysis \OT1/cmr/m/n/10 mod-ule, which pro-vides func-tions \OT1/cmtt/m/n/10 compute[]spread()\OT1/cmr/m/n/10 ,
+ []
+
+[14]
+Overfull \hbox (4.46748pt too wide) in paragraph at lines 548--549
+[]\OT1/cmtt/m/n/10 compute[]spread[]returns(y[]prices, x[]prices, hedge[]ratio) \OT1/cmr/m/n/10 --- com-putes daily log spread
+ []
+
+
+LaTeX Warning: Reference `eq:ou_expected_return' on page 15 undefined on input line 550.
+
+[15]
+
+LaTeX Warning: Reference `eq:min_var' on page 16 undefined on input line 563.
+
+
+LaTeX Warning: Reference `eq:max_sharpe' on page 16 undefined on input line 564.
+
+
+Overfull \hbox (5.46194pt too wide) in paragraph at lines 564--565
+[]\OT1/cmtt/m/n/10 maximum[]sharpe[]weights(mu, cov, rf) \OT1/cmr/m/n/10 --- solves the max-i-mum Sharpe ra-tio prob-lem (Equa-
+ []
+
+
+LaTeX Warning: Reference `sec:backtesting' on page 16 undefined on input line 585.
+
+[16]
+
+LaTeX Warning: Reference `sec:backtesting' on page 17 undefined on input line 593.
+
+
+Overfull \hbox (67.33069pt too wide) in paragraph at lines 593--594
+\OT1/cmr/m/n/10 The \OT1/cmtt/m/n/10 metrics \OT1/cmr/m/n/10 mod-ule pro-vides three core func-tions: \OT1/cmtt/m/n/10 compute[]ex[]post[]sharpe[]ratio()\OT1/cmr/m/n/10 , \OT1/cmtt/m/n/10 compute[]max[]drawdown()\OT1/cmr/m/n/10 ,
+ []
+
+
+Overfull \hbox (19.1745pt too wide) in paragraph at lines 593--594
+\OT1/cmr/m/n/10 and \OT1/cmtt/m/n/10 compute[]volatility[]reduction()\OT1/cmr/m/n/10 , each im-ple-mented as de-scribed in Sec-tion []. The \OT1/cmtt/m/n/10 benchmarks
+ []
+
+
+LaTeX Warning: Reference `chap:results' on page 17 undefined on input line 612.
+
+[17] [18]
+Chapter 5.
+
+LaTeX Warning: Reference `tab:cointegration_screening' on page 19 undefined on input line 653.
+
+
+LaTeX Warning: Reference `tab:spread_characterisation' on page 19 undefined on input line 655.
+
+
+LaTeX Warning: Reference `fig:normalised_prices' on page 19 undefined on input line 655.
+
+
+LaTeX Warning: File `figures/01_normalised_prices.pdf' not found on input line 680.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:680: Package pdftex.def Error: File `figures/01_normalised_prices.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.680 ...twidth]{figures/01_normalised_prices.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/01_spread_characterisation.pdf' not found on input line 690.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:690: Package pdftex.def Error: File `figures/01_spread_characterisation.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.690 ...]{figures/01_spread_characterisation.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/01_spread_levels.pdf' not found on input line 703.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:703: Package pdftex.def Error: File `figures/01_spread_levels.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.703 ...\textwidth]{figures/01_spread_levels.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/01_spread_zscores.pdf' not found on input line 713.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:713: Package pdftex.def Error: File `figures/01_spread_zscores.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.713 ...textwidth]{figures/01_spread_zscores.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/01_spread_rolling_halflife.pdf' not found on input line 724.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:724: Package pdftex.def Error: File `figures/01_spread_rolling_halflife.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.724 ...]{figures/01_spread_rolling_halflife.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[19
+
+] [20] [21] [22] [23] [24]
+
+LaTeX Warning: Reference `tab:oos_spread_stats' on page 25 undefined on input line 738.
+
+
+LaTeX Warning: Reference `tab:cointegration_validation' on page 25 undefined on input line 740.
+
+
+LaTeX Warning: Reference `fig:oos_eg_pvalues' on page 25 undefined on input line 741.
+
+
+LaTeX Warning: File `figures/02_oos_eg_pvalues.pdf' not found on input line 798.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:798: Package pdftex.def Error: File `figures/02_oos_eg_pvalues.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.798 ...textwidth]{figures/02_oos_eg_pvalues.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: Reference `tab:cointegration_screening' on page 25 undefined on input line 804.
+
+
+LaTeX Warning: Reference `tab:cointegration_screening' on page 25 undefined on input line 804.
+
+
+LaTeX Warning: File `figures/02_spread_is_oos_concat.pdf' not found on input line 810.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:810: Package pdftex.def Error: File `figures/02_spread_is_oos_concat.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.810 ...dth]{figures/02_spread_is_oos_concat.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/02_zscore_is_oos.pdf' not found on input line 822.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:822: Package pdftex.def Error: File `figures/02_zscore_is_oos.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.822 ...\textwidth]{figures/02_zscore_is_oos.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/02_rolling_halflife_is_oos.pdf' not found on input line 834.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:834: Package pdftex.def Error: File `figures/02_rolling_halflife_is_oos.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.834 ...]{figures/02_rolling_halflife_is_oos.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[25] [26] [27] [28] [29]
+
+LaTeX Warning: Reference `tab:return_estimation' on page 30 undefined on input line 887.
+
+
+LaTeX Warning: File `figures/03_cumulative_returns.pdf' not found on input line 911.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:911: Package pdftex.def Error: File `figures/03_cumulative_returns.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.911 ...width]{figures/03_cumulative_returns.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/03_mu_comparison.pdf' not found on input line 921.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:921: Package pdftex.def Error: File `figures/03_mu_comparison.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.921 ...\textwidth]{figures/03_mu_comparison.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/03_correlation_heatmap.pdf' not found on input line 934.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:934: Package pdftex.def Error: File `figures/03_correlation_heatmap.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.934 ...idth]{figures/03_correlation_heatmap.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[30] [31] [32] [33]
+
+LaTeX Warning: Reference `tab:backtest_results' on page 34 undefined on input line 949.
+
+
+LaTeX Warning: File `figures/04_cumulative_returns.pdf' not found on input line 1004.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1004: Package pdftex.def Error: File `figures/04_cumulative_returns.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1004 ...idth]{figures/04_cumulative_returns.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/04_drawdown.pdf' not found on input line 1015.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1015: Package pdftex.def Error: File `figures/04_drawdown.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1015 ...dth=\textwidth]{figures/04_drawdown.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/04_rolling_sharpe.pdf' not found on input line 1025.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1025: Package pdftex.def Error: File `figures/04_rolling_sharpe.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1025 ...extwidth]{figures/04_rolling_sharpe.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/04_weights_bar.pdf' not found on input line 1035.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1035: Package pdftex.def Error: File `figures/04_weights_bar.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1035 ...=\textwidth]{figures/04_weights_bar.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/04_pair_cumulative_returns.pdf' not found on input line 1046.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1046: Package pdftex.def Error: File `figures/04_pair_cumulative_returns.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1046 ...{figures/04_pair_cumulative_returns.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[34] [35] [36] [37] [38] [39]
 Chapter 6.
 
-LaTeX Warning: Reference `tab:spread_characterisation' on page 34 undefined on input line 609.
+LaTeX Warning: Reference `tab:spread_characterisation' on page 40 undefined on input line 1060.
 
 
-LaTeX Warning: Reference `tab:cointegration_validation' on page 34 undefined on input line 616.
+LaTeX Warning: Reference `tab:cointegration_validation' on page 40 undefined on input line 1067.
 
 
-LaTeX Warning: Reference `tab:perpair_backtest' on page 34 undefined on input line 620.
+LaTeX Warning: Reference `tab:perpair_backtest' on page 40 undefined on input line 1071.
 
 
-LaTeX Warning: Reference `tab:backtest_results' on page 34 undefined on input line 622.
+LaTeX Warning: Reference `tab:backtest_results' on page 40 undefined on input line 1073.
 
-[34
 
-]
+LaTeX Warning: Reference `tab:cointegration_screening' on page 40 undefined on input line 1084.
+
+
+LaTeX Warning: Reference `tab:cointegration_comparison' on page 40 undefined on input line 1084.
+
+[40
+
+] [41]
 Chapter 7.
-[35
 
-] [36
+LaTeX Warning: Empty bibliography on input line 1114.
+
+[42
 
 ]
 Appendix A.
-[37
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1121: Package pdfpages Error: Cannot find file `FYP_Project_Plan.pdf'.
+
+See the pdfpages package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1121 \includepdf[pages=-]{FYP_Project_Plan.pdf}
+                                                 
+This error message was generated by an \errmessage
+command, so I can't give any explicit help.
+Pretend that you're Hercule Poirot: Examine all clues,
+and deduce the truth by order and method.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1121: Package pdfpages Error: Cannot find file `-'.
+
+See the pdfpages package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1121 \includepdf[pages=-]{FYP_Project_Plan.pdf}
+                                                 
+(That was another \errmessage.)
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1121: Undefined control sequence.
+\AM@expand@range ...M@i \relax \@tempcntb =\AM@ii 
+                                                  \relax \ifnum \@tempcnta <...
+l.1121 \includepdf[pages=-]{FYP_Project_Plan.pdf}
+                                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1121: Missing number, treated as zero.
+<to be read again> 
+                   \relax 
+l.1121 \includepdf[pages=-]{FYP_Project_Plan.pdf}
+                                                 
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1121: Undefined control sequence.
+\AM@checkpagenumber #1->\ifnum #1>\AM@pagecount 
+                                                \relax \ifthenelse {\boolean...
+l.1121 \includepdf[pages=-]{FYP_Project_Plan.pdf}
+                                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1121: Missing number, treated as zero.
+<to be read again> 
+                   \relax 
+l.1121 \includepdf[pages=-]{FYP_Project_Plan.pdf}
+                                                 
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1121: Package pdfpages Error: Page 1 of `\AM@currentdocname ' does not exist.
+
+See the pdfpages package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1121 \includepdf[pages=-]{FYP_Project_Plan.pdf}
+                                                 
+You have set a wrong page number in the `pages' option. Document 
+`\AM@currentdocname ' does not have 1 pages.
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1121: Undefined control sequence.
+\AM@checkpagenumber #1->\ifnum #1>\AM@pagecount 
+                                                \relax \ifthenelse {\boolean...
+l.1121 \includepdf[pages=-]{FYP_Project_Plan.pdf}
+                                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1121: Missing number, treated as zero.
+<to be read again> 
+                   \relax 
+l.1121 \includepdf[pages=-]{FYP_Project_Plan.pdf}
+                                                 
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+[43
 
 ]
 Appendix B.
-[38
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1125: Package pdfpages Error: Cannot find file `FYP_Interim_Report.pdf'.
+
+See the pdfpages package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1125 ...ludepdf[pages=-]{FYP_Interim_Report.pdf}
+                                                  
+(That was another \errmessage.)
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1125: Package pdfpages Error: Cannot find file `-'.
+
+See the pdfpages package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1125 ...ludepdf[pages=-]{FYP_Interim_Report.pdf}
+                                                  
+(That was another \errmessage.)
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1125: Undefined control sequence.
+\AM@expand@range ...M@i \relax \@tempcntb =\AM@ii 
+                                                  \relax \ifnum \@tempcnta <...
+l.1125 ...ludepdf[pages=-]{FYP_Interim_Report.pdf}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1125: Missing number, treated as zero.
+<to be read again> 
+                   \relax 
+l.1125 ...ludepdf[pages=-]{FYP_Interim_Report.pdf}
+                                                  
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1125: Undefined control sequence.
+\AM@checkpagenumber #1->\ifnum #1>\AM@pagecount 
+                                                \relax \ifthenelse {\boolean...
+l.1125 ...ludepdf[pages=-]{FYP_Interim_Report.pdf}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1125: Missing number, treated as zero.
+<to be read again> 
+                   \relax 
+l.1125 ...ludepdf[pages=-]{FYP_Interim_Report.pdf}
+                                                  
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1125: Package pdfpages Error: Page 1 of `\AM@currentdocname ' does not exist.
+
+See the pdfpages package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1125 ...ludepdf[pages=-]{FYP_Interim_Report.pdf}
+                                                  
+You have set a wrong page number in the `pages' option. Document 
+`\AM@currentdocname ' does not have 1 pages.
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1125: Undefined control sequence.
+\AM@checkpagenumber #1->\ifnum #1>\AM@pagecount 
+                                                \relax \ifthenelse {\boolean...
+l.1125 ...ludepdf[pages=-]{FYP_Interim_Report.pdf}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1125: Missing number, treated as zero.
+<to be read again> 
+                   \relax 
+l.1125 ...ludepdf[pages=-]{FYP_Interim_Report.pdf}
+                                                  
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+[44
 
 ]
 Appendix C.
-[39
+
+LaTeX Warning: File `figures/04_rolling_volatility.pdf' not found on input line 1133.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1133: Package pdftex.def Error: File `figures/04_rolling_volatility.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1133 ...idth]{figures/04_rolling_volatility.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/04_efficient_frontier.pdf' not found on input line 1143.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1143: Package pdftex.def Error: File `figures/04_efficient_frontier.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1143 ...idth]{figures/04_efficient_frontier.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `figures/04_return_distribution.pdf' not found on input line 1153.
+
+
+/Users/declanloo/Library/CloudStorage/OneDrive-UniversityCollegeLondon/UCL/Year 3/COMP0029 - Final Year Project/Asset-Pair-Portfolio-Optimiser/FYP Docs/Report/main.tex:1153: Package pdftex.def Error: File `figures/04_return_distribution.pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1153 ...dth]{figures/04_return_distribution.pdf}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[45
+
+] [46] [47]
+Appendix D.
+
+Overfull \hbox (12.34499pt too wide) in paragraph at lines 1164--1165
+\OT1/cmr/m/n/10 The repos-i-tory is found here $\OT1/cmtt/m/n/10 https : / / github . com / Declan-[]Loo / Asset-[]Pair-[]Portfolio-[]Optimiser$ 
+ []
+
+
+LaTeX Warning: Reference `chap:implementation' on page 48 undefined on input line 1206.
+
+[48
 
 ]
-Appendix D.
-[40
 
-] (./main.aux)
+LaTeX Warning: Reference `sec:lseg-config' on page 49 undefined on input line 1227.
+
+
+Overfull \hbox (47.6956pt too wide) in paragraph at lines 1263--1264
+[]\OT1/cmr/m/n/10 Once the file is present and the LSEG Workspace desk-top ap-pli-ca-tion is run-ning, the \OT1/cmtt/m/n/10 refinitiv[]client.py
+ []
+
+[49]
+Overfull \hbox (48.71149pt too wide) in paragraph at lines 1303--1304
+\OT1/cmr/m/n/10 in-dexed by spread la-bel), then pass it as the \OT1/cmtt/m/n/10 expected[]returns \OT1/cmr/m/n/10 ar-gu-ment to \OT1/cmtt/m/n/10 optimiser.optimise[]portfolio\OT1/cmr/m/n/10 . 
+ []
+
+[50]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 1311.
+ [51] [52] [53] [54] [55] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                main
+(biblatex)                and rerun LaTeX afterwards.
+
+Package logreq Info: Writing requests to 'main.run.xml'.
+\openout1 = `main.run.xml'.
+
  ) 
 Here is how much of TeX's memory you used:
- 8616 strings out of 476025
- 208737 string characters out of 5790017
- 1870388 words of memory out of 5000000
- 28916 multiletter control sequences out of 15000+600000
- 524974 words of font info for 85 fonts, out of 8000000 for 9000
+ 28203 strings out of 476025
+ 615794 string characters out of 5790017
+ 1887388 words of memory out of 5000000
+ 48170 multiletter control sequences out of 15000+600000
+ 530180 words of font info for 105 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 73i,13n,77p,780b,526s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/latxfont/lasy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on main.pdf (42 pages, 297996 bytes).
+ 84i,14n,89p,2023b,805s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx0800.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on main.pdf (57 pages, 486565 bytes).
 PDF statistics:
- 252 PDF objects out of 1000 (max. 8388607)
- 162 compressed objects within 2 object streams
+ 349 PDF objects out of 1000 (max. 8388607)
+ 225 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

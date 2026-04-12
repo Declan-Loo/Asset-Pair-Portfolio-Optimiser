@@ -22,7 +22,7 @@ _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from src.data.refinitiv_client import get_close_prices
+from src.data.refinitiv_client import get_close_prices, open_session
 from src.data.yfinance_sp500 import get_sp500_prices
 from src.modelling.cointegration import screen_pairs, engle_granger_test
 from src.modelling.spread_analysis import (
@@ -33,15 +33,15 @@ from src.modelling.spread_analysis import (
     spread_summary,
 )
 from src.modelling.optimiser import (
-    mean_variance_weights,
-    efficient_frontier,
+    optimise_portfolio,
+    compute_efficient_frontier,
     rolling_hedge_ratio,
 )
 from src.modelling.return_estimation import (
     build_spread_return_matrix,
     historical_mean_return,
-    ewma_return,
-    build_ou_expected_returns,
+    ewma_mean_return,
+    build_ou_implied_returns,
     sample_covariance,
     shrinkage_covariance,
 )
@@ -77,6 +77,51 @@ st.set_page_config(
     page_title="Pairs-Trading Portfolio Optimiser",
     layout="wide",
 )
+
+# Extra sidebar button styling: dark mode and newer Streamlit builds often apply
+# theme CSS after this block, so .streamlit/config.toml primaryColor is the main fix.
+st.markdown(
+    """
+    <style>
+    /* High-specificity: sidebar primary / Execute button — light & dark */
+    section[data-testid="stSidebar"] button[kind="primary"],
+    section[data-testid="stSidebar"] button[data-testid="stBaseButton-primary"],
+    div[data-testid="stSidebar"] button[kind="primary"],
+    div[data-testid="stSidebar"] button[data-testid="stBaseButton-primary"] {
+        background-color: #22c55e !important;
+        background: #22c55e !important;
+        border-color: #16a34a !important;
+        color: #ffffff !important;
+        --primary-color: #22c55e !important;
+    }
+    section[data-testid="stSidebar"] button[kind="primary"]:hover,
+    section[data-testid="stSidebar"] button[data-testid="stBaseButton-primary"]:hover,
+    div[data-testid="stSidebar"] button[kind="primary"]:hover,
+    div[data-testid="stSidebar"] button[data-testid="stBaseButton-primary"]:hover {
+        background-color: #16a34a !important;
+        background: #16a34a !important;
+        border-color: #15803d !important;
+        color: #ffffff !important;
+    }
+    section[data-testid="stSidebar"] button[kind="primary"]:focus-visible,
+    section[data-testid="stSidebar"] button[data-testid="stBaseButton-primary"]:focus-visible {
+        box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.45) !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Open LSEG once per Streamlit process as soon as the app loads. Subsequent
+# reruns are no-ops (refinitiv_client.open_session is idempotent). Fails fast
+# if Workspace / credentials are unavailable instead of failing on first fetch.
+try:
+    open_session()
+except Exception as exc:
+    st.error(f"LSEG session could not be started: {exc}")
+    st.caption("Ensure LSEG Workspace / Eikon is running and API access is configured.")
+    st.stop()
+
 st.title("Pairs-Trading Portfolio Optimiser")
 st.caption(
     "Estimating expected returns by predicting the spread between "
@@ -145,6 +190,11 @@ lookback = st.sidebar.slider("Lookback window", 20, 120, 60, 5)
 tx_cost = st.sidebar.number_input("Transaction cost (bps)", min_value=0.0, value=10.0, step=1.0)
 initial_capital = st.sidebar.number_input("Initial capital", min_value=1_000, value=100_000, step=5_000)
 rf_annual = st.sidebar.number_input("Risk-free rate (annual)", value=0.02, min_value=0.0, max_value=0.2, step=0.005, format="%.3f")
+l2_reg = st.sidebar.slider(
+    "L2 regularisation (weight penalty)", 0.0, 0.20, 0.0, 0.01,
+    help="Ridge penalty on portfolio weights. Pulls weights toward equal-weight "
+         "to reduce concentration. 0 = standard Markowitz, typical range 0.01–0.10.",
+)
 
 include_sp500 = st.sidebar.checkbox("Include S&P 500 benchmark", value=True, help="Fetch S&P 500 via yfinance for the test date range.")
 
@@ -152,23 +202,52 @@ if not portfolio_pairs:
     st.warning("Select at least one pair in the sidebar.")
     st.stop()
 
-@st.cache_data(show_spinner="Fetching price data from LSEG...")
+st.sidebar.markdown("---")
+if st.sidebar.button("▶ Execute", type="primary", width="stretch", key="execute_analysis"):
+    st.session_state["executed"] = True
+
+if not st.session_state.get("executed", False):
+    st.info("Configure your portfolio in the sidebar, then click **▶ Execute** to run the analysis.")
+    st.stop()
+
+@st.cache_data(show_spinner=False)
 def load_prices(tickers: tuple, start: str, end: str) -> pd.DataFrame:
     return get_close_prices(list(tickers), start=start, end=end)
 
+@st.cache_data(show_spinner=False)
+def run_screen_pairs(prices: pd.DataFrame, pairs: tuple) -> pd.DataFrame:
+    return screen_pairs(prices, list(pairs))
+
 unique_tickers = sorted({t for pair in portfolio_pairs for t in pair})
-train_prices = load_prices(tuple(unique_tickers), str(train_start), str(train_end))
-test_prices = load_prices(tuple(unique_tickers), str(test_start), str(test_end))
 
-# Optional S&P 500 (yfinance)
-sp500_prices = None
-if include_sp500:
-    sp500_prices = get_sp500_prices(str(test_start), str(test_end))
-    if sp500_prices.empty:
-        sp500_prices = None
+with st.status("Running analysis...", expanded=True) as _status:
+    st.write(f"Fetching training prices ({train_start} – {train_end}) from LSEG for: {', '.join(unique_tickers)}")
+    train_prices = load_prices(tuple(unique_tickers), str(train_start), str(train_end))
 
-screening_df = screen_pairs(train_prices, portfolio_pairs)
-coint_pairs = screening_df[screening_df["is_cointegrated"]]
+    st.write(f"Fetching test prices ({test_start} – {test_end}) from LSEG...")
+    test_prices = load_prices(tuple(unique_tickers), str(test_start), str(test_end))
+
+    sp500_prices = None
+    if include_sp500:
+        st.write("Fetching S&P 500 benchmark prices (yfinance)...")
+        sp500_prices = get_sp500_prices(str(test_start), str(test_end))
+        if sp500_prices.empty:
+            st.warning("S&P 500 data unavailable — skipping benchmark.")
+            sp500_prices = None
+
+    st.write(
+        f"Running Engle-Granger cointegration test (AEG / MacKinnon critical values) "
+        f"on {len(portfolio_pairs)} candidate pair(s)..."
+    )
+    screening_df = run_screen_pairs(train_prices, tuple(map(tuple, portfolio_pairs)))
+    coint_pairs = screening_df[screening_df["is_cointegrated"]]
+
+    n_coint = len(coint_pairs)
+    st.write(
+        f"Cointegration screening complete — "
+        f"**{n_coint} of {len(portfolio_pairs)} pair(s) cointegrated** at the 5% level."
+    )
+    _status.update(label="Analysis complete.", state="complete", expanded=False)
 
 # ---------------------------------------------------------------------------
 # Tabs
@@ -191,10 +270,10 @@ with tab_coint:
             "intercept": "{:.4f}",
             "adf_stat": "{:.4f}",
             "p_value": "{:.6f}",
-        }),
-        use_container_width=True,
+        }, na_rep="N/A"),
+        width="stretch",
     )
-    st.plotly_chart(plot_cointegration_results(screening_df), use_container_width=True)
+    st.plotly_chart(plot_cointegration_results(screening_df), width="stretch", key="coint_bar")
     st.info(f"{len(coint_pairs)} of {len(portfolio_pairs)} pairs are cointegrated at the 5% level.")
 
 # ===== TAB 2: Spread & Z-Scores =====
@@ -217,7 +296,7 @@ with tab_spread:
         hr_fig.add_trace(go.Scatter(x=roll_df.index, y=roll_df["hedge_ratio"], name="Rolling B", line=dict(color="#636EFA")))
         hr_fig.add_hline(y=hr_static, line=dict(color="red", dash="dash"), annotation_text=f"Static B = {hr_static:.4f}")
         hr_fig.update_layout(yaxis_title="Hedge ratio (B)", height=280, margin=dict(t=20, b=20))
-        st.plotly_chart(hr_fig, use_container_width=True)
+        st.plotly_chart(hr_fig, width="stretch", key="rolling_hr")
         hr, intercept = hr_latest, int_latest
     else:
         hr, intercept = hr_static, intercept_static
@@ -225,7 +304,7 @@ with tab_spread:
     zscore = compute_zscore(spread, window=lookback)
     st.plotly_chart(
         plot_spread_with_bands(spread, zscore, entry_z=entry_z, exit_z=exit_z),
-        use_container_width=True,
+        width="stretch", key="spread_bands",
     )
     summary = spread_summary(train_prices[sel_y], train_prices[sel_x], hr, intercept, window=lookback)
     c1, c2, c3, c4 = st.columns(4)
@@ -256,11 +335,11 @@ with tab_returns:
         # ------------------------------------------------------------------
         st.subheader("1. Spread-based return estimates (training period)")
 
-        ou_mu = build_ou_expected_returns(
+        ou_mu = build_ou_implied_returns(
             train_prices, coint_pairs, window=lookback, annualise=True,
         )
         hist_mu = historical_mean_return(train_spread_rets, annualise=True)
-        ewma_mu = ewma_return(train_spread_rets, span=lookback, annualise=True)
+        ewma_mu = ewma_mean_return(train_spread_rets, span=lookback, annualise=True)
 
         # Friendly pair labels
         pair_labels = [f"{r['y']} / {r['x']}" for _, r in coint_pairs.iterrows()]
@@ -274,11 +353,11 @@ with tab_returns:
 
         st.plotly_chart(
             plot_return_estimates_comparison(estimates_df),
-            use_container_width=True,
+            width="stretch", key="return_estimates_bar",
         )
         st.dataframe(
             estimates_df.style.format("{:.2%}"),
-            use_container_width=True,
+            width="stretch",
         )
 
         # ------------------------------------------------------------------
@@ -309,11 +388,11 @@ with tab_returns:
         detail_df = pd.DataFrame(detail_rows).set_index("Pair")
         st.dataframe(
             detail_df.style
-            .format("{:.4f}", subset=["Hedge ratio"])
-            .format("{:.1f}", subset=["Half-life (days)"])
-            .format("{:.3f}", subset=["Hurst exponent", "Current z-score"])
-            .format("{:.2%}", subset=["OU E[r] (ann.)", "Hist. E[r] (ann.)"]),
-            use_container_width=True,
+            .format("{:.4f}", subset=["Hedge ratio"], na_rep="N/A")
+            .format("{:.1f}", subset=["Half-life (days)"], na_rep="N/A")
+            .format("{:.3f}", subset=["Hurst exponent", "Current z-score"], na_rep="N/A")
+            .format("{:.2%}", subset=["OU E[r] (ann.)", "Hist. E[r] (ann.)"], na_rep="N/A"),
+            width="stretch",
         )
 
         st.caption(
@@ -342,7 +421,7 @@ with tab_returns:
             })
             st.dataframe(
                 sp_df.style.format("{:.2%}", subset=["E[r] (ann.)"]),
-                hide_index=True, use_container_width=True,
+                hide_index=True, width="stretch",
             )
         with col_tr:
             st.markdown("**Traditional estimates (historical mean)**")
@@ -352,7 +431,7 @@ with tab_returns:
             })
             st.dataframe(
                 tr_df.style.format("{:.2%}", subset=["E[r] (ann.)"]),
-                hide_index=True, use_container_width=True,
+                hide_index=True, width="stretch",
             )
 
         # ------------------------------------------------------------------
@@ -375,7 +454,7 @@ with tab_returns:
                     train_spread_rets[sel_key], window=lookback,
                     pair_label=pair_sel_ret,
                 ),
-                use_container_width=True,
+                width="stretch", key="rolling_return_est",
             )
 
         # ------------------------------------------------------------------
@@ -396,7 +475,7 @@ with tab_returns:
         cov_display = cov_mat.copy()
         cov_display.index = pair_labels
         cov_display.columns = pair_labels
-        st.dataframe(cov_display.style.format("{:.6f}"), use_container_width=True)
+        st.dataframe(cov_display.style.format("{:.6f}"), width="stretch")
 
 # ===== TAB 4: Backtest Results (enhanced) =====
 with tab_bt:
@@ -420,7 +499,7 @@ with tab_bt:
 
         # Metrics
         st.subheader("Strategy performance")
-        st.dataframe(format_metrics_table(result.metrics), use_container_width=True, hide_index=True)
+        st.dataframe(format_metrics_table(result.metrics), width="stretch", hide_index=True)
 
         # Benchmarks
         benchmarks = build_all_benchmarks(
@@ -439,9 +518,9 @@ with tab_bt:
         bench_df = bench_df[["sharpe_ratio", "max_drawdown", "total_return", "annualised_volatility", "volatility_reduction"]]
         bench_df.columns = ["Sharpe", "Max DD", "Total return", "Ann. vol", "Vol reduction vs B&H"]
         st.dataframe(
-            bench_df.style.format("{:.2f}", subset=["Sharpe"])
-            .format("{:.2%}", subset=["Max DD", "Total return", "Ann. vol", "Vol reduction vs B&H"]),
-            use_container_width=True,
+            bench_df.style.format("{:.2f}", subset=["Sharpe"], na_rep="N/A")
+            .format("{:.2%}", subset=["Max DD", "Total return", "Ann. vol", "Vol reduction vs B&H"], na_rep="N/A"),
+            width="stretch",
         )
 
         # Cumulative returns
@@ -450,17 +529,17 @@ with tab_bt:
         label_map = {"risk_free": "Risk-free", "buy_hold_pair": "B&H (pair)", "equal_weight_pairs": "Equal-weight pairs", "sp500": "S&P 500"}
         for k in b_cols:
             series_for_chart[label_map.get(k, k)] = benchmarks[k]
-        st.plotly_chart(plot_cumulative_returns_multi(series_for_chart), use_container_width=True)
+        st.plotly_chart(plot_cumulative_returns_multi(series_for_chart), width="stretch", key="bt_cumret")
 
         # Drawdown
         st.subheader("Drawdown")
-        st.plotly_chart(plot_drawdown(result.daily_returns), use_container_width=True)
+        st.plotly_chart(plot_drawdown(result.daily_returns), width="stretch", key="bt_drawdown")
 
         # Rolling Sharpe
         st.subheader("Rolling Sharpe ratio")
         st.plotly_chart(
             plot_rolling_sharpe(result.daily_returns, window=lookback, rf_annual=rf_annual),
-            use_container_width=True,
+            width="stretch", key="bt_rolling_sharpe",
         )
 
         # Returns distribution
@@ -468,48 +547,36 @@ with tab_bt:
         dist_series = {"Strategy": result.daily_returns}
         if "buy_hold_pair" in benchmarks:
             dist_series["B&H (pair)"] = benchmarks["buy_hold_pair"]
-        st.plotly_chart(plot_returns_distribution(dist_series), use_container_width=True)
+        st.plotly_chart(plot_returns_distribution(dist_series), width="stretch", key="bt_ret_dist")
 
         # Position timeline + trade log
         st.subheader("Position timeline")
-        st.plotly_chart(plot_position_timeline(result.positions["position"]), use_container_width=True)
+        st.plotly_chart(plot_position_timeline(result.positions["position"]), width="stretch", key="bt_positions")
         st.subheader("Trade log")
         if not result.trades.empty:
-            st.dataframe(result.trades, use_container_width=True)
+            st.dataframe(result.trades, width="stretch")
         else:
             st.info("No trades in the test period.")
 
 # ===== TAB 5: Strategy vs Benchmarks =====
 with tab_compare:
-    st.header("Spread-based strategy vs Historical MPT vs Benchmarks")
+    st.header("Combined portfolio: Spread-based vs Historical MPT vs Benchmarks")
     st.caption(
-        "Side-by-side comparison: spread-based z-score strategy vs traditional "
-        "Markowitz (max-Sharpe from training data) vs passive benchmarks."
+        "Full multi-pair portfolio comparison — spread-based equal-weight allocation across all "
+        "cointegrated pairs vs traditional Markowitz (max-Sharpe, IS-estimated) vs passive benchmarks."
     )
     if coint_pairs.empty:
         st.warning("No cointegrated pairs.")
     else:
-        bt_pair_labels_c = [f"{r['y']} / {r['x']}" for _, r in coint_pairs.iterrows()]
-        compare_pair = st.selectbox("Select pair for comparison", bt_pair_labels_c, key="compare_pair")
-        c_idx = bt_pair_labels_c.index(compare_pair)
-        c_row = coint_pairs.iloc[c_idx]
-        y_t = test_prices[c_row["y"]]
-        x_t = test_prices[c_row["x"]]
-        train_two = train_prices[[c_row["y"], c_row["x"]]].copy()
-        test_two = test_prices[[c_row["y"], c_row["x"]]].copy()
+        # Spread-based: equal-weight across ALL cointegrated pair spreads
+        from src.backtesting.benchmarks import equal_weight_pairs_returns
+        strategy_ret = equal_weight_pairs_returns(test_prices, coint_pairs)
 
-        # Spread-based backtest
-        config = BacktestConfig(
-            entry_z=entry_z, exit_z=exit_z, stop_loss_z=stop_z,
-            lookback_window=lookback, transaction_cost_bps=tx_cost,
-            initial_capital=float(initial_capital),
-        )
-        engine = PairsBacktestEngine(config)
-        spread_result = engine.run(y_t, x_t, hedge_ratio=c_row["hedge_ratio"], intercept=c_row["intercept"])
-        strategy_ret = spread_result.daily_returns
-
-        # Historical MPT
-        mpt_ret = historical_mpt_returns(train_two, test_two, rf_annual=rf_annual)
+        # Historical MPT: max-Sharpe weights estimated on ALL cointegrated pair tickers using IS data
+        all_tickers = list(dict.fromkeys(coint_pairs["y"].tolist() + coint_pairs["x"].tolist()))
+        train_all = train_prices[all_tickers].copy()
+        test_all = test_prices[all_tickers].copy()
+        mpt_ret = historical_mpt_returns(train_all, test_all, rf_annual=rf_annual)
 
         # Benchmarks
         benchmarks_c = build_all_benchmarks(test_prices, coint_pairs, rf_annual=rf_annual, market_prices=sp500_prices)
@@ -521,7 +588,7 @@ with tab_compare:
 
         bh_ret = benchmarks_c.get("buy_hold_pair")
         rows = [
-            row_metrics("Spread-based (z-score)", strategy_ret, bh_ret),
+            row_metrics("Spread-based (equal-weight)", strategy_ret, bh_ret),
             row_metrics("Historical MPT (max-Sharpe)", mpt_ret, bh_ret),
         ]
         for bname, bret in benchmarks_c.items():
@@ -531,30 +598,30 @@ with tab_compare:
         compare_df = compare_df[["sharpe_ratio", "max_drawdown", "total_return", "annualised_volatility", "volatility_reduction"]]
         compare_df.columns = ["Sharpe", "Max DD", "Total return", "Ann. vol", "Vol reduction vs B&H"]
         st.dataframe(
-            compare_df.style.format("{:.2f}", subset=["Sharpe"])
-            .format("{:.2%}", subset=["Max DD", "Total return", "Ann. vol", "Vol reduction vs B&H"]),
-            use_container_width=True,
+            compare_df.style.format("{:.2f}", subset=["Sharpe"], na_rep="N/A")
+            .format("{:.2%}", subset=["Max DD", "Total return", "Ann. vol", "Vol reduction vs B&H"], na_rep="N/A"),
+            width="stretch",
         )
 
         st.subheader("Cumulative returns comparison")
         chart_series = {
-            "Spread-based": strategy_ret,
+            "Spread-based (equal-weight)": strategy_ret,
             "Historical MPT": mpt_ret,
         }
         for bname, bret in benchmarks_c.items():
             label = {"risk_free": "Risk-free", "buy_hold_pair": "B&H (pair)", "equal_weight_pairs": "Equal-weight pairs", "sp500": "S&P 500"}.get(bname, bname)
             chart_series[label] = bret
-        st.plotly_chart(plot_cumulative_returns_multi(chart_series), use_container_width=True)
+        st.plotly_chart(plot_cumulative_returns_multi(chart_series), width="stretch", key="cmp_cumret")
 
         # Drawdown comparison
         st.subheader("Drawdown comparison")
         dd_col1, dd_col2 = st.columns(2)
         with dd_col1:
-            st.markdown("**Spread-based strategy**")
-            st.plotly_chart(plot_drawdown(strategy_ret), use_container_width=True)
+            st.markdown("**Spread-based (equal-weight)**")
+            st.plotly_chart(plot_drawdown(strategy_ret), width="stretch", key="cmp_dd_spread")
         with dd_col2:
             st.markdown("**Historical MPT**")
-            st.plotly_chart(plot_drawdown(mpt_ret), use_container_width=True)
+            st.plotly_chart(plot_drawdown(mpt_ret), width="stretch", key="cmp_dd_mpt")
 
 # ===== TAB 6: Portfolio Optimisation =====
 with tab_opt:
@@ -566,12 +633,13 @@ with tab_opt:
     if coint_pairs.empty:
         st.warning("No cointegrated pairs — cannot optimise.")
     else:
-        # Build spread return matrix for all cointegrated pairs
+        # Spread return matrices: IS (train) for traditional MPT, OOS (test) for spread-based
+        train_spread_rets_opt = build_spread_return_matrix(train_prices, coint_pairs)
         spread_returns_df = build_spread_return_matrix(test_prices, coint_pairs)
 
         if spread_returns_df.shape[1] < 2:
             st.info("Need at least 2 cointegrated pairs for the frontier.")
-            st.dataframe(spread_returns_df.describe(), use_container_width=True)
+            st.dataframe(spread_returns_df.describe(), width="stretch")
         else:
             # --- Return estimation method selector ---
             ret_method = st.radio(
@@ -581,27 +649,37 @@ with tab_opt:
             )
 
             if ret_method == "OU-implied (spread prediction)":
-                spread_mu = build_ou_expected_returns(
+                spread_mu = build_ou_implied_returns(
                     test_prices, coint_pairs, window=lookback, annualise=False,
                 )
                 spread_mu = spread_mu.reindex(spread_returns_df.columns).fillna(0.0)
                 custom_mu = spread_mu.values
             else:
-                custom_mu = None
+                # Historical mean of OOS spread returns
+                custom_mu = historical_mean_return(spread_returns_df, annualise=False).values
+
+            # Traditional MPT: estimated entirely on IS training data (historical Markowitz)
+            trad_mu = historical_mean_return(train_spread_rets_opt, annualise=False).values
+            mv_traditional = optimise_portfolio(
+                train_spread_rets_opt, expected_returns=trad_mu, rf_annual=rf_annual,
+                l2_reg=l2_reg,
+            )
 
             # --- Spread-based MPT ---
             st.subheader("Spread-based efficient frontier")
-            mv_spread = mean_variance_weights(
+            mv_spread = optimise_portfolio(
                 spread_returns_df, expected_returns=custom_mu, rf_annual=rf_annual,
+                l2_reg=l2_reg,
             )
-            frontier_spread = efficient_frontier(
+            frontier_spread = compute_efficient_frontier(
                 spread_returns_df, expected_returns=custom_mu, rf_annual=rf_annual,
+                l2_reg=l2_reg,
             )
             max_sharpe_pt = (mv_spread["max_sharpe_vol"], mv_spread["max_sharpe_return"])
             min_var_pt = (mv_spread["min_var_vol"], mv_spread["min_var_return"])
             st.plotly_chart(
                 plot_efficient_frontier(frontier_spread, max_sharpe_pt, min_var_pt),
-                use_container_width=True,
+                width="stretch", key="opt_frontier",
             )
 
             # Volatility reduction
@@ -618,8 +696,9 @@ with tab_opt:
 
             # Weights comparison
             st.subheader("Weights: spread-based vs traditional MPT")
-            mv_traditional = mean_variance_weights(
-                spread_returns_df, expected_returns=None, rf_annual=rf_annual,
+            st.caption(
+                "Spread-based weights are optimised using OOS spread data with the selected return estimator. "
+                "Traditional weights are estimated from in-sample (training) data only — the classic Markowitz approach."
             )
 
             opt_pair_labels = [c.replace("_vs_", " / ") for c in spread_returns_df.columns]
@@ -648,14 +727,29 @@ with tab_opt:
                 w_df["Weight"] = w_df["Weight"].map("{:.2%}".format)
                 st.dataframe(w_df, hide_index=True)
 
-            # Performance summary
-            st.subheader("Performance summary")
+            # Performance summary — OOS (test period) stats for both strategies
+            st.subheader("Performance summary (OOS test period)")
+            st.caption("Returns and volatility are computed on the out-of-sample test period for all strategies.")
+
+            def _oos_stats(weights: np.ndarray) -> tuple[float, float]:
+                """Annualised OOS return and vol by applying IS weights to OOS spread returns."""
+                oos_ret = (spread_returns_df.dropna() * weights).sum(axis=1)
+                ann_ret = float(oos_ret.mean() * 252)
+                ann_vol = float(oos_ret.std(ddof=1) * np.sqrt(252))
+                return ann_ret, ann_vol
+
             def _sharpe(ret, vol):
                 return f"{(ret - rf_annual) / vol:.2f}" if vol > 0 else "N/A"
+
+            sp_ms_ret, sp_ms_vol = _oos_stats(mv_spread["max_sharpe_weights"])
+            sp_mv_ret, sp_mv_vol = _oos_stats(mv_spread["min_var_weights"])
+            tr_ms_ret, tr_ms_vol = _oos_stats(mv_traditional["max_sharpe_weights"])
+            tr_mv_ret, tr_mv_vol = _oos_stats(mv_traditional["min_var_weights"])
+
             summary_rows = [
-                {"Portfolio": "Spread-based Max-Sharpe",   "Ann. Return": f"{mv_spread['max_sharpe_return']:.2%}",    "Ann. Vol": f"{mv_spread['max_sharpe_vol']:.2%}",    "Sharpe": _sharpe(mv_spread["max_sharpe_return"], mv_spread["max_sharpe_vol"])},
-                {"Portfolio": "Traditional Max-Sharpe",    "Ann. Return": f"{mv_traditional['max_sharpe_return']:.2%}", "Ann. Vol": f"{mv_traditional['max_sharpe_vol']:.2%}", "Sharpe": _sharpe(mv_traditional["max_sharpe_return"], mv_traditional["max_sharpe_vol"])},
-                {"Portfolio": "Spread-based Min-Variance", "Ann. Return": f"{mv_spread['min_var_return']:.2%}",       "Ann. Vol": f"{mv_spread['min_var_vol']:.2%}",       "Sharpe": _sharpe(mv_spread["min_var_return"], mv_spread["min_var_vol"])},
-                {"Portfolio": "Traditional Min-Variance",  "Ann. Return": f"{mv_traditional['min_var_return']:.2%}",    "Ann. Vol": f"{mv_traditional['min_var_vol']:.2%}",    "Sharpe": _sharpe(mv_traditional["min_var_return"], mv_traditional["min_var_vol"])},
+                {"Portfolio": "Spread-based Max-Sharpe",   "Ann. Return": f"{sp_ms_ret:.2%}", "Ann. Vol": f"{sp_ms_vol:.2%}", "Sharpe": _sharpe(sp_ms_ret, sp_ms_vol)},
+                {"Portfolio": "Traditional Max-Sharpe",    "Ann. Return": f"{tr_ms_ret:.2%}", "Ann. Vol": f"{tr_ms_vol:.2%}", "Sharpe": _sharpe(tr_ms_ret, tr_ms_vol)},
+                {"Portfolio": "Spread-based Min-Variance", "Ann. Return": f"{sp_mv_ret:.2%}", "Ann. Vol": f"{sp_mv_vol:.2%}", "Sharpe": _sharpe(sp_mv_ret, sp_mv_vol)},
+                {"Portfolio": "Traditional Min-Variance",  "Ann. Return": f"{tr_mv_ret:.2%}", "Ann. Vol": f"{tr_mv_vol:.2%}", "Sharpe": _sharpe(tr_mv_ret, tr_mv_vol)},
             ]
-            st.dataframe(pd.DataFrame(summary_rows).set_index("Portfolio"), use_container_width=True)
+            st.dataframe(pd.DataFrame(summary_rows).set_index("Portfolio"), width="stretch")

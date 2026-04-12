@@ -199,6 +199,10 @@ def build_all_benchmarks(
         two_legs = test_prices[[row["y"], row["x"]]]
         out["buy_hold_pair"] = buy_and_hold_returns(two_legs, weights=None)
         out["equal_weight_pairs"] = equal_weight_pairs_returns(test_prices, coint_pairs)
+        all_legs = list(dict.fromkeys(
+            t for _, r in coint_pairs.iterrows() for t in [r["y"], r["x"]]
+        ))
+        out["buy_hold_all"] = buy_and_hold_returns(test_prices[all_legs], weights=None)
     if market_prices is not None:
         ret = market_returns(market_prices)
         ret = ret.reindex(index).dropna(how="all")

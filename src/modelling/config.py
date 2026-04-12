@@ -36,6 +36,8 @@ TICKERS = [
     # Healthcare (Pharma)
     "JNJ.N",    # Johnson & Johnson
     "PFE.N",    # Pfizer
+    "MRK.N",    # Merck
+    "ABBV.N",   # AbbVie
 ]
 
 # 16 Candidate pairs by sector (for cointegration testing)
@@ -68,6 +70,7 @@ CANDIDATE_PAIRS = [
 
     # Healthcare Pharma (2 pairs)
     ("JNJ.N",  "PFE.N"),
+    ("MRK.N",  "ABBV.N"),   # ← 16th pair: Merck vs AbbVie
 ]
 
 TICKER_NAMES = {
@@ -95,6 +98,8 @@ TICKER_NAMES = {
     "GOOGL.O": "Alphabet (C)",
     "JNJ.N":   "Johnson & Johnson",
     "PFE.N":   "Pfizer",
+    "MRK.N":   "Merck",
+    "ABBV.N":  "AbbVie",
 }
 
 # Date ranges

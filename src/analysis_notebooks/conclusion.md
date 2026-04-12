@@ -6,52 +6,53 @@
 
 ## Summary of Findings
 
-### Pair Selection and Spread Characterisation
+### Pair Screening and Stability
 
-Of 16 sector-paired candidates screened over the in-sample period (2018–2023), three passed the Augmented Engle-Granger cointegration test at the 5% significance level: **GS.N/MS.N** (p = 0.020), **KO.N/PEP.O** (p = 0.035), and **DAL.N/UAL.O** (p = 0.036). All three spreads exhibited Hurst exponents below 0.5 and mean-reversion half-lives of 41–53 days, confirming the statistical preconditions for Ornstein-Uhlenbeck return estimation. The remaining 13 pairs — including all semiconductor, cloud, banking, and oil service candidates — showed no evidence of a stable long-run equilibrium.
+From 16 within-sector candidate pairs (2018-2023 in-sample), three passed the 5% cointegration threshold: **GS.N/MS.N**, **KO.N/PEP.O**, and **DAL.N/UAL.O**. However, out-of-sample (2024-2025) diagnostics showed instability in all three relationships, with DAL/UAL the weakest and most noise-contributing spread in portfolio construction.
 
-### Out-of-Sample Cointegration Stability
+### Portfolio-Level Backtest Results
 
-Applying in-sample hedge ratios to the OOS period (2024–2025) revealed structural instability across all three pairs. ADF p-values rose substantially from their in-sample levels, half-lives doubled or quadrupled, and KO/PEP's Hurst exponent exceeded 0.5 OOS — indicating trend-following rather than mean-reverting behaviour. DAL/UAL proved the most unstable, contributing disproportionate noise to the portfolio OOS. Re-estimation over the OOS window confirmed GS/MS as fragile and KO/PEP as structurally inverted (hedge ratio −0.350 vs in-sample +0.641). This breakdown is consistent with the 2024–2025 bull market constituting a distinct macroeconomic regime from the training period.
-
-### Return Estimation
-
-OU-implied annualised returns were negative or near-zero for GS/MS and KO/PEP, reflecting spread z-scores close to equilibrium at the OOS start. Historical estimates were uniformly positive (6.4–15.5%). The divergence is structural: OU returns are conditioned on current spread deviation and penalise pairs near equilibrium, whereas historical means are unconditional. In a three-pair universe with limited active mispricing, OU max-Sharpe weights collapsed to corner solutions — an instability inherent to small, near-equilibrium universes.
-
-### Portfolio Optimisation and Backtesting
+Values below match the summary `metrics_df` produced at the end of `04_backtest_results.ipynb` (out-of-sample 2024–2025).
 
 | Portfolio | Sharpe | Max DD | Total Return | Ann. Vol | Vol. Reduction |
-|-----------|--------|--------|--------------|----------|----------------|
-| **OU Min-Var** | **0.986** | **−8.7%** | **23.0%** | **8.9%** | **+7.5%** |
-| OU Max-Sharpe | 0.895 | −16.1% | 29.3% | 13.2% | −36.0% |
-| Hist Min-Var | 0.342 | −14.2% | 12.3% | 14.1% | −45.4% |
-| Hist Max-Sharpe | 0.844 | −20.0% | 37.5% | 18.7% | −93.2% |
-| Equal-Weight | 0.625 | −10.6% | 16.3% | 9.7% | — |
-| Buy & Hold | 1.403 | −30.0% | 108.0% | 27.5% | — |
-| S&P 500 (SPY) | 1.110 | −18.9% | 44.3% | 16.0% | — |
+| --- | --- | --- | --- | --- | --- |
+| Equal-Weight | 0.6253 | -10.62% | 16.28% | 9.68% | — |
+| Spread Min-Var (μ = 0) | 0.7200 | -9.48% | 17.77% | 9.24% | +4.54% |
+| Spread Max-Sharpe (OU) | 0.9630 | -11.54% | 34.82% | 14.64% | -51.25% |
+| Hist Min-Var | 0.7113 | -13.08% | 24.26% | 13.91% | -43.62% |
+| Hist Max-Sharpe | 0.8677 | -20.02% | 38.83% | 18.73% | -93.44% |
+| Buy & Hold | 1.4029 | -29.96% | 108.04% | 27.54% | — |
+| S&P 500 (SPY) | 1.1099 | -18.90% | 44.33% | 15.98% | — |
 
-OU Min-Var achieved the best risk-adjusted return among all four optimised strategies — approximately **3× the Sharpe of Hist Min-Var** (0.986 vs 0.342), with maximum drawdown reduced from −14.2% to −8.7% and annualised volatility cut to 8.9% vs 14.1%. It was the only strategy to achieve a positive volatility reduction (+7.5%) relative to equal-weight. Notably, equal-weight spread allocation (Sharpe 0.625) substantially underperformed OU Min-Var, indicating that covariance-driven weighting in spread space adds genuine value when DAL/UAL's higher volatility is properly down-weighted.
+*Volatility reduction is relative to the equal-weight spread benchmark (where not shown as NaN).*
 
-However, adding DAL/UAL as a third pair — despite passing the 5% significance threshold — visibly degraded performance relative to the 2-pair baseline (OU Min-Var Sharpe dropped from 1.359 to 0.986). This highlights that **borderline cointegration does not guarantee OOS spread stability**, and that pair quality dominates universe size.
+**Note on OU Min-Var:** Minimum-variance weights depend only on the covariance matrix, not on the expected-return vector. In this implementation, **OU Min-Var** and **Spread Min-Var (μ = 0)** therefore use the same weights and identical OOS return series — only one row is needed in the table.
+
+Buy-and-hold and SPY achieved higher headline Sharpe and total return but with much larger drawdowns and volatility than spread-based min-variance. **Spread Min-Var** remains the conservative spread-space baseline: modest positive volatility reduction versus equal-weight, with lower drawdown than **Spread Max-Sharpe (OU)**.
+
+### Interpretation
+
+**Covariance-only spread allocation (Spread Min-Var)** versus **historical asset min-variance (Hist Min-Var)** is now the clean cross-frontier comparison: Sharpe ratios are almost identical (0.7200 vs 0.7113), but spread min-variance delivers lower annualised volatility (9.24% vs 13.91%) and a shallower maximum drawdown (-9.48% vs -13.08%). That supports using spread-space construction for risk control even when mean forecasts are doubtful.
+
+**Where OU μ enters the model** is the **max-Sharpe** objective, not min-variance. **Spread Max-Sharpe (OU)** raises Sharpe (0.9630) and total return (34.82%) relative to Spread Min-Var, but at the cost of higher volatility (14.64%) and negative volatility reduction versus equal-weight — a classic risk–return trade-off rather than uniform dominance.
+
+A recurring theme remains **cointegration quality**: weak or borderline pairs can add noise; expanding the universe without stability checks can dilute performance.
 
 ## Hypothesis Evaluation
 
 The hypothesis is **partially supported**.
 
-**Supported**: OU Min-Var outperformed Hist Min-Var across all three evaluation metrics — Sharpe ratio (0.986 vs 0.342), maximum drawdown (−8.7% vs −14.2%), and annualised volatility (8.9% vs 14.1%) — validating that cointegration-based portfolio construction produces superior risk-adjusted allocations.
-
-**Qualified**: OU Max-Sharpe (0.895) underperformed OU Min-Var (0.986), confirming that the OU return vector \(\mu\) is too unstable in a small near-equilibrium universe to improve upon pure covariance-driven weighting. The benefit of cointegration is concentrated in the **spread covariance structure**, not return prediction.
-
-**Not supported**: Per-pair z-score signals failed to trigger meaningful trades OOS, as spreads remained near equilibrium throughout the test period. The signal-generation layer did not contribute to returns.
+- **Supported (risk-focused):** Spread Min-Var matched Hist Min-Var on Sharpe but with clearly lower volatility and drawdown — a meaningful improvement in risk-adjusted profile for a conservative objective.
+- **Qualified:** OU-implied means do not affect min-variance weights; their role shows up in **Spread Max-Sharpe (OU)**, which improves return and Sharpe versus Spread Min-Var but increases risk.
+- **Not supported at signal layer:** Pair-level z-score trading contributed little OOS under the observed 2024–2025 regime.
 
 ## Limitations
 
-- **Borderline pairs**: DAL/UAL passed at p = 0.036 but proved OOS-unstable, reducing portfolio Sharpe by 0.37 — illustrating the cost of weak cointegration
-- **Small universe**: Three pairs limits diversification and amplifies sensitivity to individual spread regime shifts
-- **Parameter instability**: Fixed in-sample hedge ratios and OU parameters degraded without rolling re-estimation
-- **Regime dependency**: The 2024–2025 bull market compressed spread volatility and suppressed mean-reversion signals
-- **\(\mu\) fragility**: OU-implied returns are degenerate near equilibrium, making max-Sharpe unreliable in small universes
+- Small final universe (three pairs) increases sensitivity to pair-specific instability.
+- Fixed in-sample parameters degrade under regime shift without rolling re-estimation.
+- Borderline cointegration significance can fail to hold OOS.
+- OU-implied expected returns are fragile when spreads start near equilibrium.
 
-## Conclusion
+## Final Conclusion
 
-Cointegration-based portfolio construction delivers a **structurally superior risk framework** relative to historical mean-variance optimisation, achieving nearly 3× higher risk-adjusted returns with substantially lower drawdown and volatility. However, the primary driver of this advantage is the **spread covariance matrix** — not OU return estimation — which naturally captures the low-correlation, mean-reverting dynamics of sector-paired spreads. Return estimation via OU processes is theoretically sound but practically fragile in small, near-equilibrium universes. A further key finding is that cointegration quality dominates universe size: including a borderline pair (DAL/UAL, p = 0.036) degraded OOS performance more than excluding it would have. Future work should prioritise rolling parameter estimation, stricter pair selection criteria, and larger spread universes to realise the full potential of cointegration-driven allocation. 
+Cointegration-driven spread portfolios remain useful for **downside and volatility control** relative to asset-space min-variance in this OOS window, while OU-implied means matter chiefly for **max-Sharpe** (not min-variance). Future work should focus on stricter pair-quality filters, rolling parameter updates, and larger candidate universes to improve OOS robustness.

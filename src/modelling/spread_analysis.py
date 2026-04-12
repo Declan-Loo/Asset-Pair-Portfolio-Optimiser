@@ -76,7 +76,10 @@ def compute_half_life(spread: pd.Series) -> float:
 
 def compute_hurst_exponent(series: pd.Series, max_lag: int = 100) -> float:
     """
-    Rescaled-range (R/S) Hurst exponent.
+    Hurst exponent via the variogram (standard deviation of increments) method.
+
+    For a fractional Brownian motion, std(S_{t+τ} − S_t) ∝ τ^H, so
+    fitting log(std) = H · log(τ) + c recovers the Hurst exponent.
 
     H < 0.5 → mean-reverting
     H ≈ 0.5 → random walk
@@ -101,10 +104,9 @@ def compute_hurst_exponent(series: pd.Series, max_lag: int = 100) -> float:
     tau = []
 
     for lag in lags:
-        # Use variance of differences at each lag
         tau.append(np.std(np.subtract(series_clean[lag:], series_clean[:-lag])))
 
-    # Fit log(tau) = H * log(lag) + c
+    # Fit log(std) = H * log(lag) + c
     log_lags = np.log(list(lags))
     log_tau  = np.log(tau)
     poly = np.polyfit(log_lags, log_tau, 1)
