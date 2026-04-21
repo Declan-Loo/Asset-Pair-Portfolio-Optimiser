@@ -1,4 +1,4 @@
-# Asset-Pair-Portfolio-Optimiser
+# Spread Prediction for Portfolio Optimisation
 
 Developed as part of my Final Year Project for UCL BSc Computer Science. The project estimates expected returns by modelling the mean-reverting spread between cointegrated asset pairs, then uses those estimates to construct Markowitz-optimal portfolios. It compares this **OU-Implied MPT** approach against traditional **Historical Mean-Variance** optimisation over an out-of-sample test period (January 2024 - December 2025).
 
